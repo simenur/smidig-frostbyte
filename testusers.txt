@@ -1,0 +1,7 @@
+Forelder:
+mail: forelder@test.no
+pw: Test123
+
+Ansatt:
+mail: ansatt@test.no
+pw: Test123
