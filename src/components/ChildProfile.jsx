@@ -2,14 +2,18 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { doc, getDoc, updateDoc, Timestamp } from 'firebase/firestore';
 import { auth, db } from '../firebase';
+import { useTheme } from '../context/ThemeContext';
 import './ChildProfile.css';
 
 function ChildProfile() {
   const { childId } = useParams();
   const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
   const [child, setChild] = useState(null);
   const [loading, setLoading] = useState(true);
   const [userRole, setUserRole] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedData, setEditedData] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,6 +39,11 @@ function ChildProfile() {
           }
 
           setChild(childData);
+          setEditedData({
+            allergies: childData.allergies || '',
+            notes: childData.notes || '',
+            emergencyContact: childData.emergencyContact || { name: '', phone: '', email: '' }
+          });
         } else {
           alert('Barn ikke funnet');
           navigate('/dashboard');
@@ -79,6 +88,41 @@ function ChildProfile() {
     }
   };
 
+  const handleEditToggle = () => {
+    if (isEditing) {
+      // Cancel editing - reset to original data
+      setEditedData({
+        allergies: child.allergies || '',
+        notes: child.notes || '',
+        emergencyContact: child.emergencyContact || { name: '', phone: '', email: '' }
+      });
+    }
+    setIsEditing(!isEditing);
+  };
+
+  const handleSave = async () => {
+    try {
+      const childRef = doc(db, 'children', childId);
+      const updateData = {
+        allergies: editedData.allergies || null,
+        notes: editedData.notes || null,
+        emergencyContact: editedData.emergencyContact.name || editedData.emergencyContact.phone || editedData.emergencyContact.email
+          ? editedData.emergencyContact
+          : null
+      };
+
+      await updateDoc(childRef, updateData);
+
+      // Update local state
+      setChild({ ...child, ...updateData });
+      setIsEditing(false);
+      alert('Informasjonen ble oppdatert');
+    } catch (error) {
+      console.error('Error updating child:', error);
+      alert('Kunne ikke oppdatere informasjonen. Prøv igjen.');
+    }
+  };
+
   const formatTime = (timestamp) => {
     if (!timestamp) return 'Aldri';
     const date = timestamp.toDate();
@@ -110,7 +154,14 @@ function ChildProfile() {
           ← Tilbake
         </button>
         <h1>Profil</h1>
-        <div></div>
+        <div className="profile-header-actions">
+          <button onClick={toggleTheme} className="theme-button" title={`Bytt til ${theme === 'light' ? 'mørk' : 'lys'} modus`}>
+            {theme === 'light' ? '🌙' : '☀️'}
+          </button>
+          <button onClick={handleEditToggle} className="edit-button">
+            {isEditing ? 'Avbryt' : 'Rediger'}
+          </button>
+        </div>
       </header>
 
       <main className="profile-main">
@@ -159,41 +210,123 @@ function ChildProfile() {
               <span className="info-value">{formatTime(child.lastCheckOut)}</span>
             </div>
 
-            {child.allergies && (
-              <div className="info-item">
-                <span className="info-label">Allergier</span>
-                <span className="info-value">{child.allergies}</span>
-              </div>
-            )}
+            <div className="info-item full-width">
+              <span className="info-label">Allergier</span>
+              {isEditing ? (
+                <input
+                  type="text"
+                  className="info-input"
+                  value={editedData.allergies}
+                  onChange={(e) => setEditedData({ ...editedData, allergies: e.target.value })}
+                  placeholder="F.eks. nøtter, melk, gluten"
+                />
+              ) : (
+                <span className="info-value">{child.allergies || 'Ingen registrert'}</span>
+              )}
+            </div>
 
-            {child.notes && (
-              <div className="info-item full-width">
-                <span className="info-label">Notater</span>
-                <span className="info-value">{child.notes}</span>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {userRole === 'staff' && child.emergencyContact && (
-          <div className="info-section">
-            <h3>Kontaktinformasjon</h3>
-            <div className="info-grid">
-              <div className="info-item">
-                <span className="info-label">Nødkontakt</span>
-                <span className="info-value">{child.emergencyContact.name}</span>
-              </div>
-              <div className="info-item">
-                <span className="info-label">Telefon</span>
-                <span className="info-value">
-                  <a href={`tel:${child.emergencyContact.phone}`}>
-                    {child.emergencyContact.phone}
-                  </a>
-                </span>
-              </div>
+            <div className="info-item full-width">
+              <span className="info-label">Notater</span>
+              {isEditing ? (
+                <textarea
+                  className="info-textarea"
+                  value={editedData.notes}
+                  onChange={(e) => setEditedData({ ...editedData, notes: e.target.value })}
+                  placeholder="Viktig informasjon om barnet"
+                  rows="3"
+                />
+              ) : (
+                <span className="info-value">{child.notes || 'Ingen notater'}</span>
+              )}
             </div>
           </div>
-        )}
+
+          {isEditing && (
+            <div className="edit-actions">
+              <button onClick={handleSave} className="save-button">
+                Lagre endringer
+              </button>
+              <button onClick={handleEditToggle} className="cancel-button">
+                Avbryt
+              </button>
+            </div>
+          )}
+        </div>
+
+        <div className="info-section">
+          <h3>Kontaktinformasjon</h3>
+          <div className="info-grid">
+            <div className="info-item">
+              <span className="info-label">Nødkontakt navn</span>
+              {isEditing ? (
+                <input
+                  type="text"
+                  className="info-input"
+                  value={editedData.emergencyContact.name}
+                  onChange={(e) => setEditedData({
+                    ...editedData,
+                    emergencyContact: { ...editedData.emergencyContact, name: e.target.value }
+                  })}
+                  placeholder="Navn på kontaktperson"
+                />
+              ) : (
+                <span className="info-value">{child.emergencyContact?.name || 'Ikke oppgitt'}</span>
+              )}
+            </div>
+
+            <div className="info-item">
+              <span className="info-label">Telefon</span>
+              {isEditing ? (
+                <input
+                  type="tel"
+                  className="info-input"
+                  value={editedData.emergencyContact.phone}
+                  onChange={(e) => setEditedData({
+                    ...editedData,
+                    emergencyContact: { ...editedData.emergencyContact, phone: e.target.value }
+                  })}
+                  placeholder="12345678"
+                />
+              ) : (
+                <span className="info-value">
+                  {child.emergencyContact?.phone ? (
+                    <a href={`tel:${child.emergencyContact.phone}`}>
+                      {child.emergencyContact.phone}
+                    </a>
+                  ) : (
+                    'Ikke oppgitt'
+                  )}
+                </span>
+              )}
+            </div>
+
+            <div className="info-item">
+              <span className="info-label">E-post</span>
+              {isEditing ? (
+                <input
+                  type="email"
+                  className="info-input"
+                  value={editedData.emergencyContact.email}
+                  onChange={(e) => setEditedData({
+                    ...editedData,
+                    emergencyContact: { ...editedData.emergencyContact, email: e.target.value }
+                  })}
+                  placeholder="epost@eksempel.no"
+                />
+              ) : (
+                <span className="info-value">
+                  {child.emergencyContact?.email ? (
+                    <a href={`mailto:${child.emergencyContact.email}`}>
+                      {child.emergencyContact.email}
+                    </a>
+                  ) : (
+                    'Ikke oppgitt'
+                  )}
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
       </main>
     </div>
   );

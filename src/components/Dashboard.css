@@ -1,6 +1,6 @@
 .dashboard-container {
   min-height: 100vh;
-  background-color: #f5f7fa;
+  background-color: var(--bg-secondary);
 }
 
 .dashboard-header {
@@ -34,6 +34,13 @@
   font-weight: 600;
 }
 
+.header-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.theme-button,
 .logout-button {
   background-color: rgba(255, 255, 255, 0.2);
   color: white;
@@ -45,6 +52,12 @@
   transition: background-color 0.3s;
 }
 
+.theme-button {
+  font-size: 1.25rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.theme-button:hover,
 .logout-button:hover {
   background-color: rgba(255, 255, 255, 0.3);
 }
@@ -62,11 +75,11 @@
 }
 
 .stat {
-  background: white;
+  background: var(--card-bg);
   padding: 1.5rem;
   border-radius: 1rem;
   flex: 1;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 8px var(--card-shadow);
   text-align: center;
 }
 
@@ -79,7 +92,7 @@
 }
 
 .stat-label {
-  color: #666;
+  color: var(--text-secondary);
   font-size: 0.95rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -92,27 +105,27 @@
 
 .empty-message {
   text-align: center;
-  color: #666;
+  color: var(--text-secondary);
   padding: 3rem;
-  background: white;
+  background: var(--card-bg);
   border-radius: 1rem;
 }
 
 .child-card {
-  background: white;
+  background: var(--card-bg);
   padding: 1.5rem;
   border-radius: 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 8px var(--card-shadow);
   transition: transform 0.2s, box-shadow 0.2s;
   border-left: 4px solid transparent;
 }
 
 .child-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px var(--card-shadow-hover);
 }
 
 .child-card.checked-in {
@@ -125,13 +138,13 @@
 
 .child-info h3 {
   margin: 0 0 0.5rem 0;
-  color: #333;
+  color: var(--text-primary);
   font-size: 1.25rem;
 }
 
 .child-status {
   margin: 0;
-  color: #666;
+  color: var(--text-secondary);
   font-size: 0.9rem;
   display: flex;
   align-items: center;
@@ -212,6 +225,10 @@
 
   .dashboard-header h1 {
     font-size: 1.5rem;
+  }
+
+  .header-actions {
+    justify-content: center;
   }
 
   .dashboard-main {

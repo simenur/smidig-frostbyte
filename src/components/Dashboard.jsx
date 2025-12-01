@@ -3,10 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { collection, query, onSnapshot, doc, updateDoc, Timestamp, getDoc, where } from 'firebase/firestore';
 import { auth, db } from '../firebase';
+import { useTheme } from '../context/ThemeContext';
 import './Dashboard.css';
 
 function Dashboard() {
   const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
   const [children, setChildren] = useState([]);
   const [userRole, setUserRole] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -140,9 +142,14 @@ function Dashboard() {
             </p>
           )}
         </div>
-        <button onClick={handleLogout} className="logout-button">
-          Logg ut
-        </button>
+        <div className="header-actions">
+          <button onClick={toggleTheme} className="theme-button" title={`Bytt til ${theme === 'light' ? 'mørk' : 'lys'} modus`}>
+            {theme === 'light' ? '🌙' : '☀️'}
+          </button>
+          <button onClick={handleLogout} className="logout-button">
+            Logg ut
+          </button>
+        </div>
       </header>
 
       <main className="dashboard-main">
