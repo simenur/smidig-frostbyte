@@ -1,31 +1,84 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
-import { collection, query, onSnapshot, doc, updateDoc, Timestamp } from 'firebase/firestore';
+import { collection, query, onSnapshot, doc, updateDoc, Timestamp, getDoc, where } from 'firebase/firestore';
 import { auth, db } from '../firebase';
 import './Dashboard.css';
 
 function Dashboard() {
+  const navigate = useNavigate();
   const [children, setChildren] = useState([]);
-  const [userRole, setUserRole] = useState('parent'); // 'parent' or 'staff'
+  const [userRole, setUserRole] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Listen for changes in children collection
-    const q = query(collection(db, 'children'));
+    if (!auth.currentUser) {
+      setLoading(false);
+      return;
+    }
+
+    // Fetch user profile to get role
+    const fetchUserProfile = async () => {
+      try {
+        console.log('Fetching profile for UID:', auth.currentUser.uid);
+        const userDoc = await getDoc(doc(db, 'users', auth.currentUser.uid));
+
+        if (userDoc.exists()) {
+          const profile = userDoc.data();
+          console.log('User profile found:', profile);
+          setUserRole(profile.role);
+        } else {
+          console.error('User profile not found for UID:', auth.currentUser.uid);
+          console.error('Make sure you have a document in the "users" collection with this UID as the document ID');
+          setUserRole('parent'); // Default to parent if no profile
+        }
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+        setUserRole('parent');
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
+
+  useEffect(() => {
+    if (!auth.currentUser || userRole === null) return;
+
+    console.log('Querying children for role:', userRole);
+    console.log('User UID:', auth.currentUser.uid);
+
+    // Query children based on role
+    let q;
+    if (userRole === 'staff') {
+      // Staff can see all children
+      console.log('Staff mode: fetching all children');
+      q = query(collection(db, 'children'));
+    } else {
+      // Parents only see their own children
+      console.log('Parent mode: fetching children where parentIds contains', auth.currentUser.uid);
+      q = query(
+        collection(db, 'children'),
+        where('parentIds', 'array-contains', auth.currentUser.uid)
+      );
+    }
+
     const unsubscribe = onSnapshot(q, (snapshot) => {
+      console.log('Firestore query returned', snapshot.docs.length, 'children');
       const childrenData = snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
       }));
+      console.log('Children data:', childrenData);
       setChildren(childrenData);
       setLoading(false);
     }, (error) => {
       console.error('Error fetching children:', error);
+      console.error('Error details:', error.message);
       setLoading(false);
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [userRole]);
 
   const handleCheckIn = async (childId) => {
     try {
@@ -81,6 +134,11 @@ function Dashboard() {
         <div>
           <h1>Krysselista</h1>
           <p className="subtitle">Eventyrhagen Barnehage</p>
+          {userRole && (
+            <p className="role-badge">
+              {userRole === 'staff' ? '👨‍💼 Ansatt' : '👨‍👩‍👧 Forelder'}
+            </p>
+          )}
         </div>
         <button onClick={handleLogout} className="logout-button">
           Logg ut
@@ -122,6 +180,12 @@ function Dashboard() {
                   </p>
                 </div>
                 <div className="child-actions">
+                  <button
+                    onClick={() => navigate(`/child/${child.id}`)}
+                    className="profile-button"
+                  >
+                    Se profil
+                  </button>
                   {child.checkedIn ? (
                     <button
                       onClick={() => handleCheckOut(child.id)}

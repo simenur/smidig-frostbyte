@@ -4,6 +4,7 @@ import { auth } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
+import ChildProfile from './components/ChildProfile';
 import './App.css';
 
 function App() {
@@ -37,6 +38,10 @@ function App() {
         <Route
           path="/dashboard"
           element={user ? <Dashboard /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/child/:childId"
+          element={user ? <ChildProfile /> : <Navigate to="/login" />}
         />
         <Route
           path="/"
