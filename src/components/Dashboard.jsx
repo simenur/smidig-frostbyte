@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
-import { collection, query, onSnapshot, doc, updateDoc, Timestamp, getDoc, where } from 'firebase/firestore';
+import { collection, query, onSnapshot, doc, updateDoc, Timestamp, getDoc, where, addDoc } from 'firebase/firestore';
 import { auth, db } from '../firebase';
 import { useTheme } from '../context/ThemeContext';
 import './Dashboard.css';
@@ -84,10 +84,23 @@ function Dashboard() {
 
   const handleCheckIn = async (childId) => {
     try {
+      const now = Timestamp.now();
       const childRef = doc(db, 'children', childId);
+
+      // Update child status
       await updateDoc(childRef, {
         checkedIn: true,
-        lastCheckIn: Timestamp.now()
+        lastCheckIn: now
+      });
+
+      // Log the check-in
+      await addDoc(collection(db, 'logs'), {
+        childId: childId,
+        childName: children.find(c => c.id === childId)?.name || 'Unknown',
+        action: 'check-in',
+        timestamp: now,
+        performedBy: auth.currentUser.uid,
+        performedByEmail: auth.currentUser.email
       });
     } catch (error) {
       console.error('Error checking in:', error);
@@ -97,10 +110,23 @@ function Dashboard() {
 
   const handleCheckOut = async (childId) => {
     try {
+      const now = Timestamp.now();
       const childRef = doc(db, 'children', childId);
+
+      // Update child status
       await updateDoc(childRef, {
         checkedIn: false,
-        lastCheckOut: Timestamp.now()
+        lastCheckOut: now
+      });
+
+      // Log the check-out
+      await addDoc(collection(db, 'logs'), {
+        childId: childId,
+        childName: children.find(c => c.id === childId)?.name || 'Unknown',
+        action: 'check-out',
+        timestamp: now,
+        performedBy: auth.currentUser.uid,
+        performedByEmail: auth.currentUser.email
       });
     } catch (error) {
       console.error('Error checking out:', error);

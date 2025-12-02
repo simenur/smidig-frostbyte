@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { doc, getDoc, updateDoc, Timestamp } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, Timestamp, addDoc, collection } from 'firebase/firestore';
 import { auth, db } from '../firebase';
 import { useTheme } from '../context/ThemeContext';
+import ActivityLog from './ActivityLog';
 import './ChildProfile.css';
 
 function ChildProfile() {
@@ -22,8 +23,10 @@ function ChildProfile() {
       try {
         // Fetch user role
         const userDoc = await getDoc(doc(db, 'users', auth.currentUser.uid));
+        let fetchedRole = null;
         if (userDoc.exists()) {
-          setUserRole(userDoc.data().role);
+          fetchedRole = userDoc.data().role;
+          setUserRole(fetchedRole);
         }
 
         // Fetch child data
@@ -32,7 +35,8 @@ function ChildProfile() {
           const childData = { id: childDoc.id, ...childDoc.data() };
 
           // Check if user has permission to view this child
-          if (userRole !== 'staff' && !childData.parentIds?.includes(auth.currentUser.uid)) {
+          // Use the fetched role directly, not the state
+          if (fetchedRole !== 'staff' && !childData.parentIds?.includes(auth.currentUser.uid)) {
             alert('Du har ikke tilgang til dette barnet');
             navigate('/dashboard');
             return;
@@ -58,16 +62,30 @@ function ChildProfile() {
     };
 
     fetchData();
-  }, [childId, navigate, userRole]);
+  }, [childId, navigate]);
 
   const handleCheckIn = async () => {
     try {
+      const now = Timestamp.now();
       const childRef = doc(db, 'children', childId);
+
+      // Update child status
       await updateDoc(childRef, {
         checkedIn: true,
-        lastCheckIn: Timestamp.now()
+        lastCheckIn: now
       });
-      setChild({ ...child, checkedIn: true, lastCheckIn: Timestamp.now() });
+
+      // Log the check-in
+      await addDoc(collection(db, 'logs'), {
+        childId: childId,
+        childName: child.name,
+        action: 'check-in',
+        timestamp: now,
+        performedBy: auth.currentUser.uid,
+        performedByEmail: auth.currentUser.email
+      });
+
+      setChild({ ...child, checkedIn: true, lastCheckIn: now });
     } catch (error) {
       console.error('Error checking in:', error);
       alert('Kunne ikke krysse inn. Prøv igjen.');
@@ -76,12 +94,26 @@ function ChildProfile() {
 
   const handleCheckOut = async () => {
     try {
+      const now = Timestamp.now();
       const childRef = doc(db, 'children', childId);
+
+      // Update child status
       await updateDoc(childRef, {
         checkedIn: false,
-        lastCheckOut: Timestamp.now()
+        lastCheckOut: now
       });
-      setChild({ ...child, checkedIn: false, lastCheckOut: Timestamp.now() });
+
+      // Log the check-out
+      await addDoc(collection(db, 'logs'), {
+        childId: childId,
+        childName: child.name,
+        action: 'check-out',
+        timestamp: now,
+        performedBy: auth.currentUser.uid,
+        performedByEmail: auth.currentUser.email
+      });
+
+      setChild({ ...child, checkedIn: false, lastCheckOut: now });
     } catch (error) {
       console.error('Error checking out:', error);
       alert('Kunne ikke krysse ut. Prøv igjen.');
@@ -327,6 +359,8 @@ function ChildProfile() {
             </div>
           </div>
         </div>
+
+        <ActivityLog childId={childId} />
       </main>
     </div>
   );
