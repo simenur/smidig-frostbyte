@@ -6,12 +6,23 @@ import { auth, db } from '../firebase';
 import { useTheme } from '../context/ThemeContext';
 import './Dashboard.css';
 
+// Department constants
+const DEPARTMENTS = ['Småbarna', 'Mellombarna', 'Storbarna'];
+
+// Test parent UID - used when toggling to parent mode for testing
+const TEST_PARENT_UID = 'VtDgO4jGy9Z8LncGTAx6r5zShIv1';
+
 function Dashboard() {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
   const [children, setChildren] = useState([]);
   const [userRole, setUserRole] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filter, setFilter] = useState('all'); // 'all', 'checked-in', 'checked-out'
+  const [selectedDepartment, setSelectedDepartment] = useState(DEPARTMENTS[0]); // Default to first department
+  const [departmentStaff, setDepartmentStaff] = useState([]); // Staff in selected department
+  const [testParentMode, setTestParentMode] = useState(false); // Flag for test parent mode
 
   useEffect(() => {
     if (!auth.currentUser) {
@@ -57,10 +68,12 @@ function Dashboard() {
       q = query(collection(db, 'children'));
     } else {
       // Parents only see their own children
-      console.log('Parent mode: fetching children where parentIds contains', auth.currentUser.uid);
+      // Use test parent UID when in test mode
+      const parentUid = testParentMode ? TEST_PARENT_UID : auth.currentUser.uid;
+      console.log('Parent mode: fetching children where parentIds contains', parentUid);
       q = query(
         collection(db, 'children'),
-        where('parentIds', 'array-contains', auth.currentUser.uid)
+        where('parentIds', 'array-contains', parentUid)
       );
     }
 
@@ -80,7 +93,30 @@ function Dashboard() {
     });
 
     return () => unsubscribe();
-  }, [userRole]);
+  }, [userRole, testParentMode]);
+
+  // Fetch staff members for selected department (for staff users only)
+  useEffect(() => {
+    if (!auth.currentUser || userRole !== 'staff') return;
+
+    const q = query(
+      collection(db, 'users'),
+      where('role', '==', 'staff'),
+      where('departments', 'array-contains', selectedDepartment)
+    );
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const staffData = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setDepartmentStaff(staffData);
+    }, (error) => {
+      console.error('Error fetching staff:', error);
+    });
+
+    return () => unsubscribe();
+  }, [userRole, selectedDepartment]);
 
   const handleCheckIn = async (childId) => {
     try {
@@ -142,11 +178,52 @@ function Dashboard() {
     }
   };
 
+  // TESTING ONLY: Toggle between staff and parent roles
+  const toggleRole = () => {
+    const newRole = userRole === 'staff' ? 'parent' : 'staff';
+    setUserRole(newRole);
+    setTestParentMode(newRole === 'parent');
+    console.log('🔄 TESTING: Switched role to', newRole);
+    if (newRole === 'parent') {
+      console.log('🔄 TESTING: Using test parent UID:', TEST_PARENT_UID);
+    }
+  };
+
   const formatTime = (timestamp) => {
     if (!timestamp) return '-';
     const date = timestamp.toDate();
     return date.toLocaleTimeString('no-NO', { hour: '2-digit', minute: '2-digit' });
   };
+
+  // Filter children based on search query, status filter, and department
+  const getFilteredChildren = () => {
+    let filtered = children;
+
+    // Apply department filter (for staff only)
+    if (userRole === 'staff') {
+      filtered = filtered.filter(child => child.department === selectedDepartment);
+    }
+
+    // Apply search filter (only for staff)
+    if (userRole === 'staff' && searchQuery.trim()) {
+      filtered = filtered.filter(child =>
+        child.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    // Apply status filter (only for staff)
+    if (userRole === 'staff' && filter !== 'all') {
+      if (filter === 'checked-in') {
+        filtered = filtered.filter(child => child.checkedIn);
+      } else if (filter === 'checked-out') {
+        filtered = filtered.filter(child => !child.checkedIn);
+      }
+    }
+
+    return filtered;
+  };
+
+  const filteredChildren = getFilteredChildren();
 
   if (loading) {
     return (
@@ -169,6 +246,9 @@ function Dashboard() {
           )}
         </div>
         <div className="header-actions">
+          <button onClick={toggleRole} className="dev-toggle-button" title="TEST: Bytt rolle">
+            🔄 {userRole === 'staff' ? 'Bytt til forelder' : 'Bytt til ansatt'}
+          </button>
           <button onClick={toggleTheme} className="theme-button" title={`Bytt til ${theme === 'light' ? 'mørk' : 'lys'} modus`}>
             {theme === 'light' ? '🌙' : '☀️'}
           </button>
@@ -179,25 +259,93 @@ function Dashboard() {
       </header>
 
       <main className="dashboard-main">
-        <div className="stats-bar">
-          <div className="stat">
-            <span className="stat-number">{children.filter(c => c.checkedIn).length}</span>
-            <span className="stat-label">Inne</span>
-          </div>
-          <div className="stat">
-            <span className="stat-number">{children.filter(c => !c.checkedIn).length}</span>
-            <span className="stat-label">Ute</span>
-          </div>
-        </div>
+        {userRole === 'staff' && (
+          <>
+            {/* Department tabs */}
+            <div className="department-tabs">
+              {DEPARTMENTS.map(dept => (
+                <button
+                  key={dept}
+                  onClick={() => setSelectedDepartment(dept)}
+                  className={`department-tab ${selectedDepartment === dept ? 'active' : ''}`}
+                >
+                  {dept}
+                </button>
+              ))}
+            </div>
+
+            {/* Staff list for selected department */}
+            {departmentStaff.length > 0 && (
+              <div className="staff-info">
+                <h3>Ansatte på {selectedDepartment}:</h3>
+                <div className="staff-list">
+                  {departmentStaff.map(staff => (
+                    <span key={staff.id} className="staff-badge">
+                      {staff.name || staff.email}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div className="stats-bar">
+              <div className="stat">
+                <span className="stat-number">{filteredChildren.filter(c => c.checkedIn).length}</span>
+                <span className="stat-label">Inne</span>
+              </div>
+              <div className="stat">
+                <span className="stat-number">{filteredChildren.filter(c => !c.checkedIn).length}</span>
+                <span className="stat-label">Ute</span>
+              </div>
+            </div>
+
+            <div className="search-filter-bar">
+              <input
+                type="text"
+                placeholder="Søk etter barn..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="search-input"
+              />
+              <div className="filter-buttons">
+                <button
+                  onClick={() => setFilter('all')}
+                  className={`filter-button ${filter === 'all' ? 'active' : ''}`}
+                >
+                  Alle
+                </button>
+                <button
+                  onClick={() => setFilter('checked-in')}
+                  className={`filter-button ${filter === 'checked-in' ? 'active' : ''}`}
+                >
+                  Inne
+                </button>
+                <button
+                  onClick={() => setFilter('checked-out')}
+                  className={`filter-button ${filter === 'checked-out' ? 'active' : ''}`}
+                >
+                  Ute
+                </button>
+              </div>
+            </div>
+          </>
+        )}
 
         <div className="children-list">
-          {children.length === 0 ? (
-            <p className="empty-message">Ingen barn registrert ennå.</p>
+          {filteredChildren.length === 0 ? (
+            <p className="empty-message">
+              {children.length === 0 ? 'Ingen barn registrert ennå.' : 'Ingen barn matcher søket.'}
+            </p>
           ) : (
-            children.map((child) => (
+            filteredChildren.map((child) => (
               <div key={child.id} className={`child-card ${child.checkedIn ? 'checked-in' : 'checked-out'}`}>
                 <div className="child-info">
-                  <h3>{child.name}</h3>
+                  <div className="child-name-row">
+                    <h3>{child.name}</h3>
+                    {child.department && (
+                      <span className="department-badge">{child.department}</span>
+                    )}
+                  </div>
                   <p className="child-status">
                     {child.checkedIn ? (
                       <>

@@ -40,6 +40,7 @@
   align-items: center;
 }
 
+.dev-toggle-button,
 .theme-button,
 .logout-button {
   background-color: rgba(255, 255, 255, 0.2);
@@ -50,6 +51,17 @@
   cursor: pointer;
   font-weight: 600;
   transition: background-color 0.3s;
+}
+
+.dev-toggle-button {
+  background-color: rgba(255, 165, 0, 0.3);
+  border-color: #ffa500;
+  font-size: 0.9rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.dev-toggle-button:hover {
+  background-color: rgba(255, 165, 0, 0.5);
 }
 
 .theme-button {
@@ -66,6 +78,69 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
+}
+
+.department-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.department-tab {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: var(--card-bg);
+  color: var(--text-primary);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 1rem;
+  box-shadow: 0 2px 4px var(--card-shadow);
+}
+
+.department-tab:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px var(--card-shadow-hover);
+}
+
+.department-tab.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.staff-info {
+  background: var(--card-bg);
+  padding: 1rem 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px var(--card-shadow);
+}
+
+.staff-info h3 {
+  margin: 0 0 0.75rem 0;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.staff-list {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.staff-badge {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  padding: 0.4rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border: 1px solid var(--border-color);
 }
 
 .stats-bar {
@@ -96,6 +171,66 @@
   font-size: 0.95rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+.search-filter-bar {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--border-color);
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: border-color 0.3s;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.search-input::placeholder {
+  color: var(--text-secondary);
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.filter-button {
+  padding: 0.75rem 1.5rem;
+  border: 2px solid var(--border-color);
+  border-radius: 0.5rem;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 0.95rem;
+}
+
+.filter-button:hover {
+  border-color: #667eea;
+  transform: translateY(-2px);
+}
+
+.filter-button.active {
+  background-color: #667eea;
+  color: white;
+  border-color: #667eea;
 }
 
 .children-list {
@@ -136,10 +271,28 @@
   border-left-color: #ff9800;
 }
 
+.child-name-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
 .child-info h3 {
-  margin: 0 0 0.5rem 0;
+  margin: 0;
   color: var(--text-primary);
   font-size: 1.25rem;
+}
+
+.department-badge {
+  background-color: #667eea;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .child-status {
@@ -229,6 +382,12 @@
 
   .header-actions {
     justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .dev-toggle-button {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.6rem;
   }
 
   .dashboard-main {
@@ -245,6 +404,47 @@
 
   .stat-number {
     font-size: 2rem;
+  }
+
+  .department-tabs {
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .department-tab {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    flex: 1;
+    min-width: 100px;
+  }
+
+  .staff-info {
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .staff-info h3 {
+    font-size: 0.85rem;
+  }
+
+  .staff-badge {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.6rem;
+  }
+
+  .search-filter-bar {
+    padding: 1rem;
+  }
+
+  .filter-buttons {
+    gap: 0.5rem;
+  }
+
+  .filter-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    flex: 1;
+    min-width: 80px;
   }
 
   .child-card {
