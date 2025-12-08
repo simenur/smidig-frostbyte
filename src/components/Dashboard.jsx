@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { collection, query, onSnapshot, doc, updateDoc, Timestamp, getDoc, where, addDoc } from 'firebase/firestore';
+import { useTranslation } from 'react-i18next';
 import { auth, db } from '../firebase';
 import { useTheme } from '../context/ThemeContext';
 import './Dashboard.css';
@@ -14,6 +15,7 @@ const TEST_PARENT_UID = 'VtDgO4jGy9Z8LncGTAx6r5zShIv1';
 
 function Dashboard() {
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
   const { theme, toggleTheme } = useTheme();
   const [children, setChildren] = useState([]);
   const [userRole, setUserRole] = useState(null);
@@ -23,6 +25,7 @@ function Dashboard() {
   const [selectedDepartment, setSelectedDepartment] = useState(DEPARTMENTS[0]); // Default to first department
   const [departmentStaff, setDepartmentStaff] = useState([]); // Staff in selected department
   const [testParentMode, setTestParentMode] = useState(false); // Flag for test parent mode
+  const [languageDropdownOpen, setLanguageDropdownOpen] = useState(false); // Language dropdown state
 
   useEffect(() => {
     if (!auth.currentUser) {
@@ -118,6 +121,18 @@ function Dashboard() {
     return () => unsubscribe();
   }, [userRole, selectedDepartment]);
 
+  // Close language dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (languageDropdownOpen && !event.target.closest('.language-dropdown')) {
+        setLanguageDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [languageDropdownOpen]);
+
   const handleCheckIn = async (childId) => {
     try {
       const now = Timestamp.now();
@@ -140,7 +155,7 @@ function Dashboard() {
       });
     } catch (error) {
       console.error('Error checking in:', error);
-      alert('Kunne ikke krysse inn. Prøv igjen.');
+      alert(t('dashboard.errors.checkInFailed'));
     }
   };
 
@@ -166,7 +181,7 @@ function Dashboard() {
       });
     } catch (error) {
       console.error('Error checking out:', error);
-      alert('Kunne ikke krysse ut. Prøv igjen.');
+      alert(t('dashboard.errors.checkOutFailed'));
     }
   };
 
@@ -187,6 +202,22 @@ function Dashboard() {
     if (newRole === 'parent') {
       console.log('🔄 TESTING: Using test parent UID:', TEST_PARENT_UID);
     }
+  };
+
+  const languages = [
+    { code: 'no', name: 'Norsk', flag: '🇳🇴' },
+    { code: 'en', name: 'English', flag: '🇬🇧' },
+    { code: 'ar', name: 'العربية', flag: '🇸🇦' },
+    { code: 'pl', name: 'Polski', flag: '🇵🇱' }
+  ];
+
+  const changeLanguage = (langCode) => {
+    i18n.changeLanguage(langCode);
+    setLanguageDropdownOpen(false);
+  };
+
+  const getCurrentLanguage = () => {
+    return languages.find(lang => lang.code === i18n.language) || languages[0];
   };
 
   const formatTime = (timestamp) => {
@@ -228,7 +259,7 @@ function Dashboard() {
   if (loading) {
     return (
       <div className="dashboard-container">
-        <p>Laster...</p>
+        <p>{t('common.loading')}</p>
       </div>
     );
   }
@@ -237,23 +268,49 @@ function Dashboard() {
     <div className="dashboard-container">
       <header className="dashboard-header">
         <div>
-          <h1>Krysselista</h1>
-          <p className="subtitle">Eventyrhagen Barnehage</p>
+          <h1>{t('dashboard.header.title')}</h1>
+          <p className="subtitle">{t('dashboard.header.subtitle')}</p>
           {userRole && (
             <p className="role-badge">
-              {userRole === 'staff' ? '👨‍💼 Ansatt' : '👨‍👩‍👧 Forelder'}
+              {userRole === 'staff' ? t('dashboard.header.roleStaff') : t('dashboard.header.roleParent')}
             </p>
           )}
         </div>
         <div className="header-actions">
-          <button onClick={toggleRole} className="dev-toggle-button" title="TEST: Bytt rolle">
-            🔄 {userRole === 'staff' ? 'Bytt til forelder' : 'Bytt til ansatt'}
+          <button onClick={toggleRole} className="dev-toggle-button" title={t('dashboard.testMode.tooltip')}>
+            🔄 {userRole === 'staff' ? t('dashboard.testMode.switchToParent') : t('dashboard.testMode.switchToStaff')}
           </button>
-          <button onClick={toggleTheme} className="theme-button" title={`Bytt til ${theme === 'light' ? 'mørk' : 'lys'} modus`}>
+
+          {/* Language Dropdown */}
+          <div className="language-dropdown">
+            <button
+              onClick={() => setLanguageDropdownOpen(!languageDropdownOpen)}
+              className="theme-button"
+              aria-label="Select language"
+            >
+              {getCurrentLanguage().flag}
+            </button>
+            {languageDropdownOpen && (
+              <div className="language-dropdown-menu">
+                {languages.map(lang => (
+                  <button
+                    key={lang.code}
+                    onClick={() => changeLanguage(lang.code)}
+                    className={`language-option ${i18n.language === lang.code ? 'active' : ''}`}
+                  >
+                    <span className="language-flag">{lang.flag}</span>
+                    <span className="language-name">{lang.name}</span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <button onClick={toggleTheme} className="theme-button" title={theme === 'light' ? t('dashboard.theme.switchToDark') : t('dashboard.theme.switchToLight')}>
             {theme === 'light' ? '🌙' : '☀️'}
           </button>
           <button onClick={handleLogout} className="logout-button">
-            Logg ut
+            {t('auth.logout')}
           </button>
         </div>
       </header>
@@ -277,7 +334,7 @@ function Dashboard() {
             {/* Staff list for selected department */}
             {departmentStaff.length > 0 && (
               <div className="staff-info">
-                <h3>Ansatte på {selectedDepartment}:</h3>
+                <h3>{t('dashboard.departments.staffIn', { department: selectedDepartment })}</h3>
                 <div className="staff-list">
                   {departmentStaff.map(staff => (
                     <span key={staff.id} className="staff-badge">
@@ -291,18 +348,18 @@ function Dashboard() {
             <div className="stats-bar">
               <div className="stat">
                 <span className="stat-number">{filteredChildren.filter(c => c.checkedIn).length}</span>
-                <span className="stat-label">Inne</span>
+                <span className="stat-label">{t('dashboard.stats.checkedIn')}</span>
               </div>
               <div className="stat">
                 <span className="stat-number">{filteredChildren.filter(c => !c.checkedIn).length}</span>
-                <span className="stat-label">Ute</span>
+                <span className="stat-label">{t('dashboard.stats.checkedOut')}</span>
               </div>
             </div>
 
             <div className="search-filter-bar">
               <input
                 type="text"
-                placeholder="Søk etter barn..."
+                placeholder={t('dashboard.search.placeholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="search-input"
@@ -312,19 +369,19 @@ function Dashboard() {
                   onClick={() => setFilter('all')}
                   className={`filter-button ${filter === 'all' ? 'active' : ''}`}
                 >
-                  Alle
+                  {t('dashboard.search.filterAll')}
                 </button>
                 <button
                   onClick={() => setFilter('checked-in')}
                   className={`filter-button ${filter === 'checked-in' ? 'active' : ''}`}
                 >
-                  Inne
+                  {t('dashboard.search.filterCheckedIn')}
                 </button>
                 <button
                   onClick={() => setFilter('checked-out')}
                   className={`filter-button ${filter === 'checked-out' ? 'active' : ''}`}
                 >
-                  Ute
+                  {t('dashboard.search.filterCheckedOut')}
                 </button>
               </div>
             </div>
@@ -334,7 +391,7 @@ function Dashboard() {
         <div className="children-list">
           {filteredChildren.length === 0 ? (
             <p className="empty-message">
-              {children.length === 0 ? 'Ingen barn registrert ennå.' : 'Ingen barn matcher søket.'}
+              {children.length === 0 ? t('dashboard.children.noChildren') : t('dashboard.children.noMatch')}
             </p>
           ) : (
             filteredChildren.map((child) => (
@@ -350,12 +407,12 @@ function Dashboard() {
                     {child.checkedIn ? (
                       <>
                         <span className="status-dot checked-in"></span>
-                        Krysset inn kl. {formatTime(child.lastCheckIn)}
+                        {t('dashboard.children.checkedInAt', { time: formatTime(child.lastCheckIn) })}
                       </>
                     ) : (
                       <>
                         <span className="status-dot checked-out"></span>
-                        {child.lastCheckOut ? `Krysset ut kl. ${formatTime(child.lastCheckOut)}` : 'Ikke krysset inn'}
+                        {child.lastCheckOut ? t('dashboard.children.checkedOutAt', { time: formatTime(child.lastCheckOut) }) : t('dashboard.children.notCheckedIn')}
                       </>
                     )}
                   </p>
@@ -365,21 +422,21 @@ function Dashboard() {
                     onClick={() => navigate(`/child/${child.id}`)}
                     className="profile-button"
                   >
-                    Se profil
+                    {t('dashboard.children.viewProfile')}
                   </button>
                   {child.checkedIn ? (
                     <button
                       onClick={() => handleCheckOut(child.id)}
                       className="checkout-button"
                     >
-                      Kryss ut
+                      {t('dashboard.children.checkOut')}
                     </button>
                   ) : (
                     <button
                       onClick={() => handleCheckIn(child.id)}
                       className="checkin-button"
                     >
-                      Kryss inn
+                      {t('dashboard.children.checkIn')}
                     </button>
                   )}
                 </div>

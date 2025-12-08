@@ -1,0 +1,135 @@
+{
+  "common": {
+    "loading": "Laster...",
+    "save": "Lagre",
+    "cancel": "Avbryt",
+    "edit": "Rediger",
+    "back": "Tilbake",
+    "yes": "Ja",
+    "no": "Nei"
+  },
+  "app": {
+    "title": "Krysselista",
+    "subtitle": "Eventyrhagen Barnehage"
+  },
+  "auth": {
+    "email": "E-post",
+    "password": "Passord",
+    "login": "Logg inn",
+    "logout": "Logg ut",
+    "loggingIn": "Logger inn...",
+    "loginError": "Feil brukernavn eller passord",
+    "emailPlaceholder": "din@epost.no",
+    "passwordPlaceholder": "••••••••"
+  },
+  "dashboard": {
+    "header": {
+      "title": "Krysselista",
+      "subtitle": "Eventyrhagen Barnehage",
+      "roleStaff": "👨‍💼 Ansatt",
+      "roleParent": "👨‍👩‍👧 Forelder"
+    },
+    "theme": {
+      "switchToLight": "Bytt til lys modus",
+      "switchToDark": "Bytt til mørk modus"
+    },
+    "testMode": {
+      "switchToParent": "Bytt til forelder",
+      "switchToStaff": "Bytt til ansatt",
+      "tooltip": "TEST: Bytt rolle"
+    },
+    "departments": {
+      "smaabarna": "Småbarna",
+      "mellombarna": "Mellombarna",
+      "storbarna": "Storbarna",
+      "staffIn": "Ansatte på {{department}}:"
+    },
+    "stats": {
+      "checkedIn": "Inne",
+      "checkedOut": "Ute"
+    },
+    "search": {
+      "placeholder": "Søk etter barn...",
+      "filterAll": "Alle",
+      "filterCheckedIn": "Inne",
+      "filterCheckedOut": "Ute"
+    },
+    "children": {
+      "noChildren": "Ingen barn registrert ennå.",
+      "noMatch": "Ingen barn matcher søket.",
+      "checkedInAt": "Krysset inn kl. {{time}}",
+      "checkedOutAt": "Krysset ut kl. {{time}}",
+      "notCheckedIn": "Ikke krysset inn",
+      "viewProfile": "Se profil",
+      "checkIn": "Kryss inn",
+      "checkOut": "Kryss ut"
+    },
+    "errors": {
+      "checkInFailed": "Kunne ikke krysse inn. Prøv igjen.",
+      "checkOutFailed": "Kunne ikke krysse ut. Prøv igjen."
+    }
+  },
+  "profile": {
+    "header": {
+      "title": "Profil",
+      "edit": "Rediger",
+      "cancel": "Avbryt"
+    },
+    "status": {
+      "present": "✓ Til stede",
+      "notPresent": "○ Ikke til stede",
+      "presentInKindergarten": "Til stede i barnehagen",
+      "notPresentText": "Ikke til stede"
+    },
+    "actions": {
+      "checkIn": "Kryss inn",
+      "checkOut": "Kryss ut"
+    },
+    "info": {
+      "title": "Informasjon",
+      "status": "Status",
+      "lastCheckIn": "Sist krysset inn",
+      "lastCheckOut": "Sist krysset ut",
+      "allergies": "Allergier",
+      "allergiesPlaceholder": "F.eks. nøtter, melk, gluten",
+      "allergiesNone": "Ingen registrert",
+      "notes": "Notater",
+      "notesPlaceholder": "Viktig informasjon om barnet",
+      "notesNone": "Ingen notater",
+      "never": "Aldri"
+    },
+    "contact": {
+      "title": "Kontaktinformasjon",
+      "emergencyContactName": "Nødkontakt navn",
+      "emergencyContactNamePlaceholder": "Navn på kontaktperson",
+      "phone": "Telefon",
+      "phonePlaceholder": "12345678",
+      "email": "E-post",
+      "emailPlaceholder": "epost@eksempel.no",
+      "notProvided": "Ikke oppgitt"
+    },
+    "editActions": {
+      "save": "Lagre endringer",
+      "cancel": "Avbryt"
+    },
+    "messages": {
+      "noAccess": "Du har ikke tilgang til dette barnet",
+      "notFound": "Barn ikke funnet",
+      "loadError": "Kunne ikke laste barnets profil",
+      "updateSuccess": "Informasjonen ble oppdatert",
+      "updateError": "Kunne ikke oppdatere informasjonen. Prøv igjen.",
+      "checkInError": "Kunne ikke krysse inn. Prøv igjen.",
+      "checkOutError": "Kunne ikke krysse ut. Prøv igjen."
+    }
+  },
+  "activityLog": {
+    "title": "Aktivitetslogg",
+    "loading": "Laster logger...",
+    "noLogs": "Ingen aktivitet registrert ennå.",
+    "checkIn": "Krysset inn",
+    "checkOut": "Krysset ut",
+    "performedBy": "av {{email}}",
+    "showMore": "Vis mer historikk",
+    "showLess": "Vis mindre"
+  }
+}

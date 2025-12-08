@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useTranslation } from 'react-i18next';
 import { auth } from '../firebase';
 import './Login.css';
 
 function Login() {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -17,7 +19,7 @@ function Login() {
     try {
       await signInWithEmailAndPassword(auth, email, password);
     } catch (err) {
-      setError('Feil brukernavn eller passord');
+      setError(t('auth.loginError'));
       console.error('Login error:', err);
     } finally {
       setLoading(false);
@@ -27,31 +29,31 @@ function Login() {
   return (
     <div className="login-container">
       <div className="login-card">
-        <h1>Krysselista</h1>
-        <h2>Eventyrhagen Barnehage</h2>
+        <h1>{t('app.title')}</h1>
+        <h2>{t('app.subtitle')}</h2>
 
         <form onSubmit={handleLogin}>
           <div className="form-group">
-            <label htmlFor="email">E-post</label>
+            <label htmlFor="email">{t('auth.email')}</label>
             <input
               id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="din@epost.no"
+              placeholder={t('auth.emailPlaceholder')}
               required
               disabled={loading}
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">Passord</label>
+            <label htmlFor="password">{t('auth.password')}</label>
             <input
               id="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
+              placeholder={t('auth.passwordPlaceholder')}
               required
               disabled={loading}
             />
@@ -60,7 +62,7 @@ function Login() {
           {error && <p className="error-message">{error}</p>}
 
           <button type="submit" disabled={loading} className="login-button">
-            {loading ? 'Logger inn...' : 'Logg inn'}
+            {loading ? t('auth.loggingIn') : t('auth.login')}
           </button>
         </form>
       </div>

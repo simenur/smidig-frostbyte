@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { doc, getDoc, updateDoc, Timestamp, addDoc, collection } from 'firebase/firestore';
+import { useTranslation } from 'react-i18next';
 import { auth, db } from '../firebase';
 import { useTheme } from '../context/ThemeContext';
 import ActivityLog from './ActivityLog';
@@ -9,6 +10,7 @@ import './ChildProfile.css';
 function ChildProfile() {
   const { childId } = useParams();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { theme, toggleTheme } = useTheme();
   const [child, setChild] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -37,7 +39,7 @@ function ChildProfile() {
           // Check if user has permission to view this child
           // Use the fetched role directly, not the state
           if (fetchedRole !== 'staff' && !childData.parentIds?.includes(auth.currentUser.uid)) {
-            alert('Du har ikke tilgang til dette barnet');
+            alert(t('profile.messages.noAccess'));
             navigate('/dashboard');
             return;
           }
@@ -49,12 +51,12 @@ function ChildProfile() {
             emergencyContact: childData.emergencyContact || { name: '', phone: '', email: '' }
           });
         } else {
-          alert('Barn ikke funnet');
+          alert(t('profile.messages.notFound'));
           navigate('/dashboard');
         }
       } catch (error) {
         console.error('Error fetching child:', error);
-        alert('Kunne ikke laste barnets profil');
+        alert(t('profile.messages.loadError'));
         navigate('/dashboard');
       } finally {
         setLoading(false);
@@ -88,7 +90,7 @@ function ChildProfile() {
       setChild({ ...child, checkedIn: true, lastCheckIn: now });
     } catch (error) {
       console.error('Error checking in:', error);
-      alert('Kunne ikke krysse inn. Prøv igjen.');
+      alert(t('profile.messages.checkInError'));
     }
   };
 
@@ -116,7 +118,7 @@ function ChildProfile() {
       setChild({ ...child, checkedIn: false, lastCheckOut: now });
     } catch (error) {
       console.error('Error checking out:', error);
-      alert('Kunne ikke krysse ut. Prøv igjen.');
+      alert(t('profile.messages.checkOutError'));
     }
   };
 
@@ -148,15 +150,15 @@ function ChildProfile() {
       // Update local state
       setChild({ ...child, ...updateData });
       setIsEditing(false);
-      alert('Informasjonen ble oppdatert');
+      alert(t('profile.messages.updateSuccess'));
     } catch (error) {
       console.error('Error updating child:', error);
-      alert('Kunne ikke oppdatere informasjonen. Prøv igjen.');
+      alert(t('profile.messages.updateError'));
     }
   };
 
   const formatTime = (timestamp) => {
-    if (!timestamp) return 'Aldri';
+    if (!timestamp) return t('profile.info.never');
     const date = timestamp.toDate();
     return date.toLocaleString('no-NO', {
       day: '2-digit',
@@ -170,7 +172,7 @@ function ChildProfile() {
   if (loading) {
     return (
       <div className="profile-container">
-        <p>Laster...</p>
+        <p>{t('common.loading')}</p>
       </div>
     );
   }
@@ -183,15 +185,15 @@ function ChildProfile() {
     <div className="profile-container">
       <header className="profile-header">
         <button onClick={() => navigate('/dashboard')} className="back-button">
-          ← Tilbake
+          ← {t('common.back')}
         </button>
-        <h1>Profil</h1>
+        <h1>{t('profile.header.title')}</h1>
         <div className="profile-header-actions">
-          <button onClick={toggleTheme} className="theme-button" title={`Bytt til ${theme === 'light' ? 'mørk' : 'lys'} modus`}>
+          <button onClick={toggleTheme} className="theme-button" title={theme === 'light' ? t('dashboard.theme.switchToDark') : t('dashboard.theme.switchToLight')}>
             {theme === 'light' ? '🌙' : '☀️'}
           </button>
           <button onClick={handleEditToggle} className="edit-button">
-            {isEditing ? 'Avbryt' : 'Rediger'}
+            {isEditing ? t('profile.header.cancel') : t('profile.header.edit')}
           </button>
         </div>
       </header>
@@ -205,70 +207,70 @@ function ChildProfile() {
           <h2 className="profile-name">{child.name}</h2>
 
           <div className={`status-badge ${child.checkedIn ? 'checked-in' : 'checked-out'}`}>
-            {child.checkedIn ? '✓ Til stede' : '○ Ikke til stede'}
+            {child.checkedIn ? t('profile.status.present') : t('profile.status.notPresent')}
           </div>
 
           <div className="profile-actions">
             {child.checkedIn ? (
               <button onClick={handleCheckOut} className="checkout-button">
-                Kryss ut
+                {t('profile.actions.checkOut')}
               </button>
             ) : (
               <button onClick={handleCheckIn} className="checkin-button">
-                Kryss inn
+                {t('profile.actions.checkIn')}
               </button>
             )}
           </div>
         </div>
 
         <div className="info-section">
-          <h3>Informasjon</h3>
+          <h3>{t('profile.info.title')}</h3>
 
           <div className="info-grid">
             <div className="info-item">
-              <span className="info-label">Status</span>
+              <span className="info-label">{t('profile.info.status')}</span>
               <span className="info-value">
-                {child.checkedIn ? 'Til stede i barnehagen' : 'Ikke til stede'}
+                {child.checkedIn ? t('profile.status.presentInKindergarten') : t('profile.status.notPresentText')}
               </span>
             </div>
 
             <div className="info-item">
-              <span className="info-label">Sist krysset inn</span>
+              <span className="info-label">{t('profile.info.lastCheckIn')}</span>
               <span className="info-value">{formatTime(child.lastCheckIn)}</span>
             </div>
 
             <div className="info-item">
-              <span className="info-label">Sist krysset ut</span>
+              <span className="info-label">{t('profile.info.lastCheckOut')}</span>
               <span className="info-value">{formatTime(child.lastCheckOut)}</span>
             </div>
 
             <div className="info-item full-width">
-              <span className="info-label">Allergier</span>
+              <span className="info-label">{t('profile.info.allergies')}</span>
               {isEditing ? (
                 <input
                   type="text"
                   className="info-input"
                   value={editedData.allergies}
                   onChange={(e) => setEditedData({ ...editedData, allergies: e.target.value })}
-                  placeholder="F.eks. nøtter, melk, gluten"
+                  placeholder={t('profile.info.allergiesPlaceholder')}
                 />
               ) : (
-                <span className="info-value">{child.allergies || 'Ingen registrert'}</span>
+                <span className="info-value">{child.allergies || t('profile.info.allergiesNone')}</span>
               )}
             </div>
 
             <div className="info-item full-width">
-              <span className="info-label">Notater</span>
+              <span className="info-label">{t('profile.info.notes')}</span>
               {isEditing ? (
                 <textarea
                   className="info-textarea"
                   value={editedData.notes}
                   onChange={(e) => setEditedData({ ...editedData, notes: e.target.value })}
-                  placeholder="Viktig informasjon om barnet"
+                  placeholder={t('profile.info.notesPlaceholder')}
                   rows="3"
                 />
               ) : (
-                <span className="info-value">{child.notes || 'Ingen notater'}</span>
+                <span className="info-value">{child.notes || t('profile.info.notesNone')}</span>
               )}
             </div>
           </div>
@@ -276,20 +278,20 @@ function ChildProfile() {
           {isEditing && (
             <div className="edit-actions">
               <button onClick={handleSave} className="save-button">
-                Lagre endringer
+                {t('profile.editActions.save')}
               </button>
               <button onClick={handleEditToggle} className="cancel-button">
-                Avbryt
+                {t('profile.editActions.cancel')}
               </button>
             </div>
           )}
         </div>
 
         <div className="info-section">
-          <h3>Kontaktinformasjon</h3>
+          <h3>{t('profile.contact.title')}</h3>
           <div className="info-grid">
             <div className="info-item">
-              <span className="info-label">Nødkontakt navn</span>
+              <span className="info-label">{t('profile.contact.emergencyContactName')}</span>
               {isEditing ? (
                 <input
                   type="text"
@@ -299,15 +301,15 @@ function ChildProfile() {
                     ...editedData,
                     emergencyContact: { ...editedData.emergencyContact, name: e.target.value }
                   })}
-                  placeholder="Navn på kontaktperson"
+                  placeholder={t('profile.contact.emergencyContactNamePlaceholder')}
                 />
               ) : (
-                <span className="info-value">{child.emergencyContact?.name || 'Ikke oppgitt'}</span>
+                <span className="info-value">{child.emergencyContact?.name || t('profile.contact.notProvided')}</span>
               )}
             </div>
 
             <div className="info-item">
-              <span className="info-label">Telefon</span>
+              <span className="info-label">{t('profile.contact.phone')}</span>
               {isEditing ? (
                 <input
                   type="tel"
@@ -317,7 +319,7 @@ function ChildProfile() {
                     ...editedData,
                     emergencyContact: { ...editedData.emergencyContact, phone: e.target.value }
                   })}
-                  placeholder="12345678"
+                  placeholder={t('profile.contact.phonePlaceholder')}
                 />
               ) : (
                 <span className="info-value">
@@ -326,14 +328,14 @@ function ChildProfile() {
                       {child.emergencyContact.phone}
                     </a>
                   ) : (
-                    'Ikke oppgitt'
+                    t('profile.contact.notProvided')
                   )}
                 </span>
               )}
             </div>
 
             <div className="info-item">
-              <span className="info-label">E-post</span>
+              <span className="info-label">{t('profile.contact.email')}</span>
               {isEditing ? (
                 <input
                   type="email"
@@ -343,7 +345,7 @@ function ChildProfile() {
                     ...editedData,
                     emergencyContact: { ...editedData.emergencyContact, email: e.target.value }
                   })}
-                  placeholder="epost@eksempel.no"
+                  placeholder={t('profile.contact.emailPlaceholder')}
                 />
               ) : (
                 <span className="info-value">
@@ -352,7 +354,7 @@ function ChildProfile() {
                       {child.emergencyContact.email}
                     </a>
                   ) : (
-                    'Ikke oppgitt'
+                    t('profile.contact.notProvided')
                   )}
                 </span>
               )}

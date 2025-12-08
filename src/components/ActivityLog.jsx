@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { collection, query, where, orderBy, limit, onSnapshot } from 'firebase/firestore';
+import { useTranslation } from 'react-i18next';
 import { db } from '../firebase';
 import './ActivityLog.css';
 
 function ActivityLog({ childId }) {
+  const { t } = useTranslation();
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAll, setShowAll] = useState(false);
@@ -48,7 +50,7 @@ function ActivityLog({ childId }) {
   };
 
   const getActionText = (action) => {
-    return action === 'check-in' ? 'Krysset inn' : 'Krysset ut';
+    return action === 'check-in' ? t('activityLog.checkIn') : t('activityLog.checkOut');
   };
 
   const getActionIcon = (action) => {
@@ -58,18 +60,18 @@ function ActivityLog({ childId }) {
   if (loading) {
     return (
       <div className="activity-log">
-        <h3>Aktivitetslogg</h3>
-        <p className="log-loading">Laster logger...</p>
+        <h3>{t('activityLog.title')}</h3>
+        <p className="log-loading">{t('activityLog.loading')}</p>
       </div>
     );
   }
 
   return (
     <div className="activity-log">
-      <h3>Aktivitetslogg</h3>
+      <h3>{t('activityLog.title')}</h3>
 
       {logs.length === 0 ? (
-        <p className="no-logs">Ingen aktivitet registrert ennå.</p>
+        <p className="no-logs">{t('activityLog.noLogs')}</p>
       ) : (
         <>
           <div className="log-list">
@@ -80,7 +82,7 @@ function ActivityLog({ childId }) {
                   <div className="log-action">{getActionText(log.action)}</div>
                   <div className="log-timestamp">{formatTimestamp(log.timestamp)}</div>
                   {log.performedByEmail && (
-                    <div className="log-user">av {log.performedByEmail}</div>
+                    <div className="log-user">{t('activityLog.performedBy', { email: log.performedByEmail })}</div>
                   )}
                 </div>
               </div>
@@ -89,13 +91,13 @@ function ActivityLog({ childId }) {
 
           {logs.length >= 2 && !showAll && (
             <button onClick={() => setShowAll(true)} className="show-more-button">
-              Vis mer historikk
+              {t('activityLog.showMore')}
             </button>
           )}
 
           {showAll && (
             <button onClick={() => setShowAll(false)} className="show-less-button">
-              Vis mindre
+              {t('activityLog.showLess')}
             </button>
           )}
         </>

@@ -1,0 +1,135 @@
+{
+  "common": {
+    "loading": "Ładowanie...",
+    "save": "Zapisz",
+    "cancel": "Anuluj",
+    "edit": "Edytuj",
+    "back": "Wstecz",
+    "yes": "Tak",
+    "no": "Nie"
+  },
+  "app": {
+    "title": "Lista obecności",
+    "subtitle": "Przedszkole Eventyrhagen"
+  },
+  "auth": {
+    "email": "E-mail",
+    "password": "Hasło",
+    "login": "Zaloguj się",
+    "logout": "Wyloguj się",
+    "loggingIn": "Logowanie...",
+    "loginError": "Nieprawidłowa nazwa użytkownika lub hasło",
+    "emailPlaceholder": "twoj@email.pl",
+    "passwordPlaceholder": "••••••••"
+  },
+  "dashboard": {
+    "header": {
+      "title": "Lista obecności",
+      "subtitle": "Przedszkole Eventyrhagen",
+      "roleStaff": "👨‍💼 Pracownik",
+      "roleParent": "👨‍👩‍👧 Rodzic"
+    },
+    "theme": {
+      "switchToLight": "Przełącz na tryb jasny",
+      "switchToDark": "Przełącz na tryb ciemny"
+    },
+    "testMode": {
+      "switchToParent": "Przełącz na rodzica",
+      "switchToStaff": "Przełącz na pracownika",
+      "tooltip": "TEST: Zmień rolę"
+    },
+    "departments": {
+      "smaabarna": "Småbarna",
+      "mellombarna": "Mellombarna",
+      "storbarna": "Storbarna",
+      "staffIn": "Pracownicy w {{department}}:"
+    },
+    "stats": {
+      "checkedIn": "W środku",
+      "checkedOut": "Na zewnątrz"
+    },
+    "search": {
+      "placeholder": "Szukaj dzieci...",
+      "filterAll": "Wszystkie",
+      "filterCheckedIn": "W środku",
+      "filterCheckedOut": "Na zewnątrz"
+    },
+    "children": {
+      "noChildren": "Nie zarejestrowano jeszcze żadnych dzieci.",
+      "noMatch": "Brak dzieci pasujących do wyszukiwania.",
+      "checkedInAt": "Zapisano o {{time}}",
+      "checkedOutAt": "Wypisano o {{time}}",
+      "notCheckedIn": "Nie zapisano",
+      "viewProfile": "Zobacz profil",
+      "checkIn": "Zapisz",
+      "checkOut": "Wypisz"
+    },
+    "errors": {
+      "checkInFailed": "Nie można zapisać. Spróbuj ponownie.",
+      "checkOutFailed": "Nie można wypisać. Spróbuj ponownie."
+    }
+  },
+  "profile": {
+    "header": {
+      "title": "Profil",
+      "edit": "Edytuj",
+      "cancel": "Anuluj"
+    },
+    "status": {
+      "present": "✓ Obecny",
+      "notPresent": "○ Nieobecny",
+      "presentInKindergarten": "Obecny w przedszkolu",
+      "notPresentText": "Nieobecny"
+    },
+    "actions": {
+      "checkIn": "Zapisz",
+      "checkOut": "Wypisz"
+    },
+    "info": {
+      "title": "Informacje",
+      "status": "Status",
+      "lastCheckIn": "Ostatnio zapisano",
+      "lastCheckOut": "Ostatnio wypisano",
+      "allergies": "Alergie",
+      "allergiesPlaceholder": "Np. orzechy, mleko, gluten",
+      "allergiesNone": "Nie zarejestrowano",
+      "notes": "Notatki",
+      "notesPlaceholder": "Ważne informacje o dziecku",
+      "notesNone": "Brak notatek",
+      "never": "Nigdy"
+    },
+    "contact": {
+      "title": "Informacje kontaktowe",
+      "emergencyContactName": "Nazwa kontaktu awaryjnego",
+      "emergencyContactNamePlaceholder": "Nazwa osoby kontaktowej",
+      "phone": "Telefon",
+      "phonePlaceholder": "12345678",
+      "email": "E-mail",
+      "emailPlaceholder": "email@przyklad.pl",
+      "notProvided": "Nie podano"
+    },
+    "editActions": {
+      "save": "Zapisz zmiany",
+      "cancel": "Anuluj"
+    },
+    "messages": {
+      "noAccess": "Nie masz dostępu do tego dziecka",
+      "notFound": "Nie znaleziono dziecka",
+      "loadError": "Nie można załadować profilu dziecka",
+      "updateSuccess": "Informacje zostały zaktualizowane",
+      "updateError": "Nie można zaktualizować informacji. Spróbuj ponownie.",
+      "checkInError": "Nie można zapisać. Spróbuj ponownie.",
+      "checkOutError": "Nie można wypisać. Spróbuj ponownie."
+    }
+  },
+  "activityLog": {
+    "title": "Dziennik aktywności",
+    "loading": "Ładowanie dziennika...",
+    "noLogs": "Nie zarejestrowano jeszcze żadnej aktywności.",
+    "checkIn": "Zapisano",
+    "checkOut": "Wypisano",
+    "performedBy": "przez {{email}}",
+    "showMore": "Pokaż więcej historii",
+    "showLess": "Pokaż mniej"
+  }
+}

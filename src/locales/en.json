@@ -1,0 +1,135 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "back": "Back",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "app": {
+    "title": "Check-in List",
+    "subtitle": "Eventyrhagen Kindergarten"
+  },
+  "auth": {
+    "email": "Email",
+    "password": "Password",
+    "login": "Log in",
+    "logout": "Log out",
+    "loggingIn": "Logging in...",
+    "loginError": "Incorrect username or password",
+    "emailPlaceholder": "your@email.com",
+    "passwordPlaceholder": "••••••••"
+  },
+  "dashboard": {
+    "header": {
+      "title": "Check-in List",
+      "subtitle": "Eventyrhagen Kindergarten",
+      "roleStaff": "👨‍💼 Staff",
+      "roleParent": "👨‍👩‍👧 Parent"
+    },
+    "theme": {
+      "switchToLight": "Switch to light mode",
+      "switchToDark": "Switch to dark mode"
+    },
+    "testMode": {
+      "switchToParent": "Switch to parent",
+      "switchToStaff": "Switch to staff",
+      "tooltip": "TEST: Switch role"
+    },
+    "departments": {
+      "smaabarna": "Småbarna",
+      "mellombarna": "Mellombarna",
+      "storbarna": "Storbarna",
+      "staffIn": "Staff in {{department}}:"
+    },
+    "stats": {
+      "checkedIn": "Inside",
+      "checkedOut": "Outside"
+    },
+    "search": {
+      "placeholder": "Search for children...",
+      "filterAll": "All",
+      "filterCheckedIn": "Inside",
+      "filterCheckedOut": "Outside"
+    },
+    "children": {
+      "noChildren": "No children registered yet.",
+      "noMatch": "No children match the search.",
+      "checkedInAt": "Checked in at {{time}}",
+      "checkedOutAt": "Checked out at {{time}}",
+      "notCheckedIn": "Not checked in",
+      "viewProfile": "View profile",
+      "checkIn": "Check in",
+      "checkOut": "Check out"
+    },
+    "errors": {
+      "checkInFailed": "Could not check in. Please try again.",
+      "checkOutFailed": "Could not check out. Please try again."
+    }
+  },
+  "profile": {
+    "header": {
+      "title": "Profile",
+      "edit": "Edit",
+      "cancel": "Cancel"
+    },
+    "status": {
+      "present": "✓ Present",
+      "notPresent": "○ Not present",
+      "presentInKindergarten": "Present at kindergarten",
+      "notPresentText": "Not present"
+    },
+    "actions": {
+      "checkIn": "Check in",
+      "checkOut": "Check out"
+    },
+    "info": {
+      "title": "Information",
+      "status": "Status",
+      "lastCheckIn": "Last checked in",
+      "lastCheckOut": "Last checked out",
+      "allergies": "Allergies",
+      "allergiesPlaceholder": "E.g. nuts, milk, gluten",
+      "allergiesNone": "None registered",
+      "notes": "Notes",
+      "notesPlaceholder": "Important information about the child",
+      "notesNone": "No notes",
+      "never": "Never"
+    },
+    "contact": {
+      "title": "Contact Information",
+      "emergencyContactName": "Emergency contact name",
+      "emergencyContactNamePlaceholder": "Contact person name",
+      "phone": "Phone",
+      "phonePlaceholder": "12345678",
+      "email": "Email",
+      "emailPlaceholder": "email@example.com",
+      "notProvided": "Not provided"
+    },
+    "editActions": {
+      "save": "Save changes",
+      "cancel": "Cancel"
+    },
+    "messages": {
+      "noAccess": "You do not have access to this child",
+      "notFound": "Child not found",
+      "loadError": "Could not load child profile",
+      "updateSuccess": "Information was updated",
+      "updateError": "Could not update information. Please try again.",
+      "checkInError": "Could not check in. Please try again.",
+      "checkOutError": "Could not check out. Please try again."
+    }
+  },
+  "activityLog": {
+    "title": "Activity Log",
+    "loading": "Loading logs...",
+    "noLogs": "No activity registered yet.",
+    "checkIn": "Checked in",
+    "checkOut": "Checked out",
+    "performedBy": "by {{email}}",
+    "showMore": "Show more history",
+    "showLess": "Show less"
+  }
+}

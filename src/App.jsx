@@ -2,12 +2,15 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { useState, useEffect } from 'react';
 import { auth } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
+import { useTranslation } from 'react-i18next';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import ChildProfile from './components/ChildProfile';
+import './i18n'; // Initialize i18next
 import './App.css';
 
 function App() {
+  const { t, i18n } = useTranslation();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -20,10 +23,17 @@ function App() {
     return () => unsubscribe();
   }, []);
 
+  // Set document direction based on language (RTL for Arabic)
+  useEffect(() => {
+    const isRTL = i18n.language === 'ar';
+    document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
+    document.documentElement.lang = i18n.language;
+  }, [i18n.language]);
+
   if (loading) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-        <p>Laster...</p>
+        <p>{t('common.loading')}</p>
       </div>
     );
   }
