@@ -18,14 +18,39 @@ export function ThemeProvider({ children }) {
     return 'light';
   });
 
+  const [manualOverride, setManualOverride] = useState(() => {
+    // Check if user has manually set a theme
+    return localStorage.getItem('theme') !== null;
+  });
+
   useEffect(() => {
     // Apply theme to document
     document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
-  }, [theme]);
+    if (manualOverride) {
+      localStorage.setItem('theme', theme);
+    }
+  }, [theme, manualOverride]);
+
+  useEffect(() => {
+    // Listen to system theme changes only if user hasn't manually set a theme
+    if (manualOverride) return;
+
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+    const handleChange = (e) => {
+      setTheme(e.matches ? 'dark' : 'light');
+    };
+
+    // Add listener
+    mediaQuery.addEventListener('change', handleChange);
+
+    // Cleanup
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, [manualOverride]);
 
   const toggleTheme = () => {
     setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
+    setManualOverride(true); // User manually toggled, so remember this choice
   };
 
   return (
