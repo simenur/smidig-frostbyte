@@ -4,6 +4,7 @@ import { collection, addDoc, doc, getDoc, query, where, getDocs } from 'firebase
 import { useTranslation } from 'react-i18next';
 import { auth, db } from '../firebase';
 import { useTheme } from '../context/ThemeContext';
+import logo from '../assets/Logo.png';
 import './AddChild.css';
 
 // Department constants
@@ -247,7 +248,10 @@ function AddChild() {
         <button onClick={() => navigate('/dashboard')} className="back-button">
           ← {t('common.back')}
         </button>
-        <h1>{t('addChild.title')}</h1>
+        <div className="header-brand">
+          <img src={logo} alt="Logo" className="header-logo" />
+          <h1>{t('addChild.title')}</h1>
+        </div>
         <button onClick={toggleTheme} className="theme-button" title={theme === 'light' ? t('dashboard.theme.switchToDark') : t('dashboard.theme.switchToLight')}>
           {theme === 'light' ? '🌙' : '☀️'}
         </button>

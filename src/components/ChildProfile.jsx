@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { auth, db } from '../firebase';
 import { useTheme } from '../context/ThemeContext';
 import ActivityLog from './ActivityLog';
+import logo from '../assets/Logo.png';
 import './ChildProfile.css';
 
 function ChildProfile() {
@@ -187,7 +188,10 @@ function ChildProfile() {
         <button onClick={() => navigate('/dashboard')} className="back-button">
           ← {t('common.back')}
         </button>
-        <h1>{t('profile.header.title')}</h1>
+        <div className="header-brand">
+          <img src={logo} alt="Logo" className="header-logo" />
+          <h1>{t('profile.header.title')}</h1>
+        </div>
         <div className="profile-header-actions">
           <button onClick={toggleTheme} className="theme-button" title={theme === 'light' ? t('dashboard.theme.switchToDark') : t('dashboard.theme.switchToLight')}>
             {theme === 'light' ? '🌙' : '☀️'}

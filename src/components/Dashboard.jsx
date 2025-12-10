@@ -5,6 +5,7 @@ import { collection, query, onSnapshot, doc, updateDoc, Timestamp, getDoc, where
 import { useTranslation } from 'react-i18next';
 import { auth, db } from '../firebase';
 import { useTheme } from '../context/ThemeContext';
+import logo from '../assets/Logo.png';
 import './Dashboard.css';
 
 // Department constants
@@ -267,14 +268,17 @@ function Dashboard() {
   return (
     <div className="dashboard-container">
       <header className="dashboard-header">
-        <div>
-          <h1>{t('dashboard.header.title')}</h1>
-          <p className="subtitle">{t('dashboard.header.subtitle')}</p>
-          {userRole && (
-            <p className="role-badge">
-              {userRole === 'staff' ? t('dashboard.header.roleStaff') : t('dashboard.header.roleParent')}
-            </p>
-          )}
+        <div className="header-brand">
+          <img src={logo} alt="Logo" className="header-logo" />
+          <div>
+            <h1>{t('dashboard.header.title')}</h1>
+            <p className="subtitle">{t('dashboard.header.subtitle')}</p>
+            {userRole && (
+              <p className="role-badge">
+                {userRole === 'staff' ? t('dashboard.header.roleStaff') : t('dashboard.header.roleParent')}
+              </p>
+            )}
+          </div>
         </div>
         <div className="header-actions">
           <button onClick={toggleRole} className="dev-toggle-button" title={t('dashboard.testMode.tooltip')}>

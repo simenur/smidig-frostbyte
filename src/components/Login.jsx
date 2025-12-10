@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useTranslation } from 'react-i18next';
 import { auth } from '../firebase';
+import logo from '../assets/Logo.png';
 import './Login.css';
 
 function Login() {
@@ -29,6 +30,7 @@ function Login() {
   return (
     <div className="login-container">
       <div className="login-card">
+        <img src={logo} alt="Logo" className="login-logo" />
         <h1>{t('app.title')}</h1>
         <h2>{t('app.subtitle')}</h2>
 
