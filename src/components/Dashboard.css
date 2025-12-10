@@ -47,34 +47,37 @@
 
 .dev-toggle-button,
 .theme-button,
+.language-button,
+.change-password-button,
+.add-child-button,
+.add-parent-button,
 .logout-button {
   background-color: rgba(255, 255, 255, 0.2);
   color: white;
   border: 2px solid white;
-  padding: 0.5rem 1.5rem;
+  padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   cursor: pointer;
   font-weight: 600;
   transition: background-color 0.3s;
+  font-size: 0.9rem;
+  white-space: nowrap;
 }
 
 .dev-toggle-button {
   background-color: rgba(255, 165, 0, 0.3);
   border-color: #ffa500;
-  font-size: 0.9rem;
-  padding: 0.5rem 0.75rem;
 }
 
 .dev-toggle-button:hover {
   background-color: rgba(255, 165, 0, 0.5);
 }
 
-.theme-button {
-  font-size: 1.25rem;
-  padding: 0.5rem 0.75rem;
-}
-
 .theme-button:hover,
+.language-button:hover,
+.change-password-button:hover,
+.add-child-button:hover,
+.add-parent-button:hover,
 .logout-button:hover {
   background-color: rgba(255, 255, 255, 0.3);
 }

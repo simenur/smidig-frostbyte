@@ -131,5 +131,99 @@
     "performedBy": "by {{email}}",
     "showMore": "Show more history",
     "showLess": "Show less"
+  },
+  "changePassword": {
+    "title": "Change Password",
+    "subtitle": "Update your password",
+    "description": "To change your password, you must first confirm your current password.",
+    "currentPassword": "Current password",
+    "currentPasswordPlaceholder": "Enter current password",
+    "newPassword": "New password",
+    "newPasswordPlaceholder": "Enter new password",
+    "confirmPassword": "Confirm new password",
+    "confirmPasswordPlaceholder": "Enter new password again",
+    "changeButton": "Change password",
+    "changing": "Changing password...",
+    "success": "Password changed successfully! Redirecting...",
+    "requirements": {
+      "title": "Password requirements:",
+      "minLength": "Minimum 6 characters",
+      "different": "Must be different from current password"
+    },
+    "errors": {
+      "allFieldsRequired": "All fields are required",
+      "passwordTooShort": "Password must be at least 6 characters",
+      "passwordsDontMatch": "Passwords do not match",
+      "samePassword": "New password must be different from current password",
+      "wrongPassword": "Current password is incorrect",
+      "weakPassword": "Password is too weak. Please choose a stronger password.",
+      "failed": "Could not change password. Please try again."
+    }
+  },
+  "addParent": {
+    "title": "Add Parent",
+    "subtitle": "Register new parent",
+    "description": "Fill out the form to add a new parent to the system. Parents are saved as pending until they complete registration.",
+    "fields": {
+      "email": "Email",
+      "emailPlaceholder": "parent@example.com",
+      "name": "Name",
+      "namePlaceholder": "Full name",
+      "phone": "Phone",
+      "phonePlaceholder": "12345678"
+    },
+    "submitButton": "Add Parent",
+    "submitting": "Adding...",
+    "success": "Parent added successfully! Redirecting...",
+    "pendingMessage": "Parent {{email}} was saved as pending. They must complete registration themselves.",
+    "errors": {
+      "emailRequired": "Email is required",
+      "nameRequired": "Name is required",
+      "failed": "Could not add parent"
+    }
+  },
+  "addChild": {
+    "title": "Add Child",
+    "subtitle": "Register new child",
+    "description": "Fill out the form to add a new child to the system.",
+    "fields": {
+      "name": "Name",
+      "namePlaceholder": "Child's full name",
+      "department": "Department",
+      "allergies": "Allergies",
+      "allergiesPlaceholder": "E.g. nuts, milk, gluten",
+      "notes": "Notes",
+      "notesPlaceholder": "Important information about the child"
+    },
+    "parents": {
+      "title": "Parents",
+      "parentNumber": "Parent {{number}}",
+      "email": "Email",
+      "emailPlaceholder": "parent@example.com",
+      "name": "Name",
+      "namePlaceholder": "Full name",
+      "phone": "Phone",
+      "phonePlaceholder": "12345678",
+      "addAnother": "Add parent",
+      "remove": "Remove"
+    },
+    "emergencyContact": {
+      "title": "Emergency Contact",
+      "name": "Name",
+      "namePlaceholder": "Contact person name",
+      "phone": "Phone",
+      "phonePlaceholder": "12345678",
+      "email": "Email",
+      "emailPlaceholder": "email@example.com"
+    },
+    "submitButton": "Add Child",
+    "submitting": "Adding...",
+    "success": "Child added successfully! Redirecting...",
+    "errors": {
+      "nameRequired": "Name is required",
+      "parentEmailRequired": "At least one parent with email and name is required",
+      "noValidParents": "No valid parents found",
+      "failed": "Could not add child. Please try again."
+    }
   }
 }

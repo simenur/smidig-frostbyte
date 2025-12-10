@@ -278,17 +278,17 @@ function Dashboard() {
         </div>
         <div className="header-actions">
           <button onClick={toggleRole} className="dev-toggle-button" title={t('dashboard.testMode.tooltip')}>
-            🔄 {userRole === 'staff' ? t('dashboard.testMode.switchToParent') : t('dashboard.testMode.switchToStaff')}
+            {userRole === 'staff' ? t('dashboard.testMode.switchToParent') : t('dashboard.testMode.switchToStaff')}
           </button>
 
           {/* Language Dropdown */}
           <div className="language-dropdown">
             <button
               onClick={() => setLanguageDropdownOpen(!languageDropdownOpen)}
-              className="theme-button"
+              className="language-button"
               aria-label="Select language"
             >
-              {getCurrentLanguage().flag}
+              {getCurrentLanguage().flag} {getCurrentLanguage().name}
             </button>
             {languageDropdownOpen && (
               <div className="language-dropdown-menu">
@@ -309,6 +309,19 @@ function Dashboard() {
           <button onClick={toggleTheme} className="theme-button" title={theme === 'light' ? t('dashboard.theme.switchToDark') : t('dashboard.theme.switchToLight')}>
             {theme === 'light' ? '🌙' : '☀️'}
           </button>
+          <button onClick={() => navigate('/change-password')} className="change-password-button" title={t('changePassword.title')}>
+            {t('changePassword.title')}
+          </button>
+          {userRole === 'staff' && (
+            <>
+              <button onClick={() => navigate('/add-child')} className="add-child-button" title={t('addChild.title')}>
+                {t('addChild.title')}
+              </button>
+              <button onClick={() => navigate('/add-parent')} className="add-parent-button" title={t('addParent.title')}>
+                {t('addParent.title')}
+              </button>
+            </>
+          )}
           <button onClick={handleLogout} className="logout-button">
             {t('auth.logout')}
           </button>

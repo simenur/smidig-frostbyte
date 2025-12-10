@@ -131,5 +131,99 @@
     "performedBy": "przez {{email}}",
     "showMore": "Pokaż więcej historii",
     "showLess": "Pokaż mniej"
+  },
+  "changePassword": {
+    "title": "Zmiana hasła",
+    "subtitle": "Zaktualizuj swoje hasło",
+    "description": "Aby zmienić hasło, musisz najpierw potwierdzić swoje obecne hasło.",
+    "currentPassword": "Obecne hasło",
+    "currentPasswordPlaceholder": "Wprowadź obecne hasło",
+    "newPassword": "Nowe hasło",
+    "newPasswordPlaceholder": "Wprowadź nowe hasło",
+    "confirmPassword": "Potwierdź nowe hasło",
+    "confirmPasswordPlaceholder": "Wprowadź nowe hasło ponownie",
+    "changeButton": "Zmień hasło",
+    "changing": "Zmiana hasła...",
+    "success": "Hasło zostało zmienione! Przekierowywanie...",
+    "requirements": {
+      "title": "Wymagania dotyczące hasła:",
+      "minLength": "Minimum 6 znaków",
+      "different": "Musi różnić się od obecnego hasła"
+    },
+    "errors": {
+      "allFieldsRequired": "Wszystkie pola są wymagane",
+      "passwordTooShort": "Hasło musi mieć co najmniej 6 znaków",
+      "passwordsDontMatch": "Hasła nie są zgodne",
+      "samePassword": "Nowe hasło musi różnić się od obecnego",
+      "wrongPassword": "Obecne hasło jest nieprawidłowe",
+      "weakPassword": "Hasło jest za słabe. Wybierz silniejsze hasło.",
+      "failed": "Nie można zmienić hasła. Spróbuj ponownie."
+    }
+  },
+  "addParent": {
+    "title": "Dodaj rodzica",
+    "subtitle": "Zarejestruj nowego rodzica",
+    "description": "Wypełnij formularz, aby dodać nowego rodzica do systemu. Rodzice są zapisywani jako oczekujący do czasu zakończenia rejestracji.",
+    "fields": {
+      "email": "E-mail",
+      "emailPlaceholder": "rodzic@przyklad.pl",
+      "name": "Imię i nazwisko",
+      "namePlaceholder": "Pełne imię i nazwisko",
+      "phone": "Telefon",
+      "phonePlaceholder": "12345678"
+    },
+    "submitButton": "Dodaj rodzica",
+    "submitting": "Dodawanie...",
+    "success": "Rodzic został dodany! Przekierowywanie...",
+    "pendingMessage": "Rodzic {{email}} został zapisany jako oczekujący. Muszą sami zakończyć rejestrację.",
+    "errors": {
+      "emailRequired": "E-mail jest wymagany",
+      "nameRequired": "Imię i nazwisko jest wymagane",
+      "failed": "Nie można dodać rodzica"
+    }
+  },
+  "addChild": {
+    "title": "Dodaj dziecko",
+    "subtitle": "Zarejestruj nowe dziecko",
+    "description": "Wypełnij formularz, aby dodać nowe dziecko do systemu.",
+    "fields": {
+      "name": "Imię i nazwisko",
+      "namePlaceholder": "Pełne imię i nazwisko dziecka",
+      "department": "Dział",
+      "allergies": "Alergie",
+      "allergiesPlaceholder": "Np. orzechy, mleko, gluten",
+      "notes": "Notatki",
+      "notesPlaceholder": "Ważne informacje o dziecku"
+    },
+    "parents": {
+      "title": "Rodzice",
+      "parentNumber": "Rodzic {{number}}",
+      "email": "E-mail",
+      "emailPlaceholder": "rodzic@przyklad.pl",
+      "name": "Imię i nazwisko",
+      "namePlaceholder": "Pełne imię i nazwisko",
+      "phone": "Telefon",
+      "phonePlaceholder": "12345678",
+      "addAnother": "Dodaj rodzica",
+      "remove": "Usuń"
+    },
+    "emergencyContact": {
+      "title": "Kontakt awaryjny",
+      "name": "Imię i nazwisko",
+      "namePlaceholder": "Nazwa osoby kontaktowej",
+      "phone": "Telefon",
+      "phonePlaceholder": "12345678",
+      "email": "E-mail",
+      "emailPlaceholder": "email@przyklad.pl"
+    },
+    "submitButton": "Dodaj dziecko",
+    "submitting": "Dodawanie...",
+    "success": "Dziecko zostało dodane! Przekierowywanie...",
+    "errors": {
+      "nameRequired": "Imię i nazwisko jest wymagane",
+      "parentEmailRequired": "Wymagany jest co najmniej jeden rodzic z adresem e-mail i imieniem",
+      "noValidParents": "Nie znaleziono prawidłowych rodziców",
+      "failed": "Nie można dodać dziecka. Spróbuj ponownie."
+    }
   }
 }

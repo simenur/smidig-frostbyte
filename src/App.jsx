@@ -6,6 +6,9 @@ import { useTranslation } from 'react-i18next';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import ChildProfile from './components/ChildProfile';
+import ChangePassword from './components/ChangePassword';
+import AddChild from './components/AddChild';
+import AddParent from './components/AddParent';
 import './i18n'; // Initialize i18next
 import './App.css';
 
@@ -52,6 +55,18 @@ function App() {
         <Route
           path="/child/:childId"
           element={user ? <ChildProfile /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/change-password"
+          element={user ? <ChangePassword /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/add-child"
+          element={user ? <AddChild /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/add-parent"
+          element={user ? <AddParent /> : <Navigate to="/login" />}
         />
         <Route
           path="/"

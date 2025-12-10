@@ -131,5 +131,99 @@
     "performedBy": "av {{email}}",
     "showMore": "Vis mer historikk",
     "showLess": "Vis mindre"
+  },
+  "changePassword": {
+    "title": "Endre passord",
+    "subtitle": "Oppdater ditt passord",
+    "description": "For å endre passordet ditt, må du først bekrefte ditt nåværende passord.",
+    "currentPassword": "Nåværende passord",
+    "currentPasswordPlaceholder": "Skriv inn nåværende passord",
+    "newPassword": "Nytt passord",
+    "newPasswordPlaceholder": "Skriv inn nytt passord",
+    "confirmPassword": "Bekreft nytt passord",
+    "confirmPasswordPlaceholder": "Skriv inn nytt passord på nytt",
+    "changeButton": "Endre passord",
+    "changing": "Endrer passord...",
+    "success": "Passordet ble endret! Omdirigerer...",
+    "requirements": {
+      "title": "Passordkrav:",
+      "minLength": "Minimum 6 tegn",
+      "different": "Må være forskjellig fra nåværende passord"
+    },
+    "errors": {
+      "allFieldsRequired": "Alle felt må fylles ut",
+      "passwordTooShort": "Passordet må være minst 6 tegn",
+      "passwordsDontMatch": "Passordene stemmer ikke overens",
+      "samePassword": "Nytt passord må være forskjellig fra det nåværende",
+      "wrongPassword": "Nåværende passord er feil",
+      "weakPassword": "Passordet er for svakt. Velg et sterkere passord.",
+      "failed": "Kunne ikke endre passord. Prøv igjen."
+    }
+  },
+  "addParent": {
+    "title": "Legg til forelder",
+    "subtitle": "Registrer ny forelder",
+    "description": "Fyll ut skjemaet for å legge til en ny forelder i systemet. Foreldre lagres som ventende til de fullfører registreringen.",
+    "fields": {
+      "email": "E-post",
+      "emailPlaceholder": "forelder@eksempel.no",
+      "name": "Navn",
+      "namePlaceholder": "Fullt navn",
+      "phone": "Telefon",
+      "phonePlaceholder": "12345678"
+    },
+    "submitButton": "Legg til forelder",
+    "submitting": "Legger til...",
+    "success": "Forelderen ble lagt til! Omdirigerer...",
+    "pendingMessage": "Forelder {{email}} ble lagret som ventende. De må fullføre registreringen selv.",
+    "errors": {
+      "emailRequired": "E-post er påkrevd",
+      "nameRequired": "Navn er påkrevd",
+      "failed": "Kunne ikke legge til forelder"
+    }
+  },
+  "addChild": {
+    "title": "Legg til barn",
+    "subtitle": "Registrer nytt barn",
+    "description": "Fyll ut skjemaet for å legge til et nytt barn i systemet.",
+    "fields": {
+      "name": "Navn",
+      "namePlaceholder": "Barnets fulle navn",
+      "department": "Avdeling",
+      "allergies": "Allergier",
+      "allergiesPlaceholder": "F.eks. nøtter, melk, gluten",
+      "notes": "Notater",
+      "notesPlaceholder": "Viktig informasjon om barnet"
+    },
+    "parents": {
+      "title": "Foreldre",
+      "parentNumber": "Forelder {{number}}",
+      "email": "E-post",
+      "emailPlaceholder": "forelder@eksempel.no",
+      "name": "Navn",
+      "namePlaceholder": "Fullt navn",
+      "phone": "Telefon",
+      "phonePlaceholder": "12345678",
+      "addAnother": "Legg til forelder",
+      "remove": "Fjern"
+    },
+    "emergencyContact": {
+      "title": "Nødkontakt",
+      "name": "Navn",
+      "namePlaceholder": "Navn på kontaktperson",
+      "phone": "Telefon",
+      "phonePlaceholder": "12345678",
+      "email": "E-post",
+      "emailPlaceholder": "epost@eksempel.no"
+    },
+    "submitButton": "Legg til barn",
+    "submitting": "Legger til...",
+    "success": "Barnet ble lagt til! Omdirigerer...",
+    "errors": {
+      "nameRequired": "Navn er påkrevd",
+      "parentEmailRequired": "Minst én forelder med e-post og navn er påkrevd",
+      "noValidParents": "Ingen gyldige foreldre funnet",
+      "failed": "Kunne ikke legge til barn. Prøv igjen."
+    }
   }
 }

@@ -131,5 +131,99 @@
     "performedBy": "بواسطة {{email}}",
     "showMore": "عرض المزيد من السجل",
     "showLess": "عرض أقل"
+  },
+  "changePassword": {
+    "title": "تغيير كلمة المرور",
+    "subtitle": "تحديث كلمة المرور",
+    "description": "لتغيير كلمة المرور، يجب عليك أولاً تأكيد كلمة المرور الحالية.",
+    "currentPassword": "كلمة المرور الحالية",
+    "currentPasswordPlaceholder": "أدخل كلمة المرور الحالية",
+    "newPassword": "كلمة المرور الجديدة",
+    "newPasswordPlaceholder": "أدخل كلمة المرور الجديدة",
+    "confirmPassword": "تأكيد كلمة المرور الجديدة",
+    "confirmPasswordPlaceholder": "أدخل كلمة المرور الجديدة مرة أخرى",
+    "changeButton": "تغيير كلمة المرور",
+    "changing": "جاري تغيير كلمة المرور...",
+    "success": "تم تغيير كلمة المرور بنجاح! جاري التوجيه...",
+    "requirements": {
+      "title": "متطلبات كلمة المرور:",
+      "minLength": "6 أحرف على الأقل",
+      "different": "يجب أن تكون مختلفة عن كلمة المرور الحالية"
+    },
+    "errors": {
+      "allFieldsRequired": "جميع الحقول مطلوبة",
+      "passwordTooShort": "يجب أن تكون كلمة المرور 6 أحرف على الأقل",
+      "passwordsDontMatch": "كلمات المرور غير متطابقة",
+      "samePassword": "يجب أن تكون كلمة المرور الجديدة مختلفة عن الحالية",
+      "wrongPassword": "كلمة المرور الحالية غير صحيحة",
+      "weakPassword": "كلمة المرور ضعيفة جداً. اختر كلمة مرور أقوى.",
+      "failed": "تعذر تغيير كلمة المرور. حاول مرة أخرى."
+    }
+  },
+  "addParent": {
+    "title": "إضافة والد",
+    "subtitle": "تسجيل والد جديد",
+    "description": "املأ النموذج لإضافة والد جديد إلى النظام. يتم حفظ الوالدين كمعلقين حتى يكملوا التسجيل.",
+    "fields": {
+      "email": "البريد الإلكتروني",
+      "emailPlaceholder": "parent@example.com",
+      "name": "الاسم",
+      "namePlaceholder": "الاسم الكامل",
+      "phone": "الهاتف",
+      "phonePlaceholder": "12345678"
+    },
+    "submitButton": "إضافة والد",
+    "submitting": "جاري الإضافة...",
+    "success": "تمت إضافة الوالد بنجاح! جاري التوجيه...",
+    "pendingMessage": "تم حفظ الوالد {{email}} كمعلق. يجب عليهم إكمال التسجيل بأنفسهم.",
+    "errors": {
+      "emailRequired": "البريد الإلكتروني مطلوب",
+      "nameRequired": "الاسم مطلوب",
+      "failed": "تعذرت إضافة الوالد"
+    }
+  },
+  "addChild": {
+    "title": "إضافة طفل",
+    "subtitle": "تسجيل طفل جديد",
+    "description": "املأ النموذج لإضافة طفل جديد إلى النظام.",
+    "fields": {
+      "name": "الاسم",
+      "namePlaceholder": "الاسم الكامل للطفل",
+      "department": "القسم",
+      "allergies": "الحساسية",
+      "allergiesPlaceholder": "مثل: المكسرات، الحليب، الجلوتين",
+      "notes": "ملاحظات",
+      "notesPlaceholder": "معلومات مهمة عن الطفل"
+    },
+    "parents": {
+      "title": "الوالدين",
+      "parentNumber": "الوالد {{number}}",
+      "email": "البريد الإلكتروني",
+      "emailPlaceholder": "parent@example.com",
+      "name": "الاسم",
+      "namePlaceholder": "الاسم الكامل",
+      "phone": "الهاتف",
+      "phonePlaceholder": "12345678",
+      "addAnother": "إضافة والد",
+      "remove": "إزالة"
+    },
+    "emergencyContact": {
+      "title": "جهة الاتصال للطوارئ",
+      "name": "الاسم",
+      "namePlaceholder": "اسم جهة الاتصال",
+      "phone": "الهاتف",
+      "phonePlaceholder": "12345678",
+      "email": "البريد الإلكتروني",
+      "emailPlaceholder": "email@example.com"
+    },
+    "submitButton": "إضافة طفل",
+    "submitting": "جاري الإضافة...",
+    "success": "تمت إضافة الطفل بنجاح! جاري التوجيه...",
+    "errors": {
+      "nameRequired": "الاسم مطلوب",
+      "parentEmailRequired": "مطلوب والد واحد على الأقل مع البريد الإلكتروني والاسم",
+      "noValidParents": "لم يتم العثور على والدين صالحين",
+      "failed": "تعذرت إضافة الطفل. حاول مرة أخرى."
+    }
   }
 }
