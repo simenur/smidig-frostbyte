@@ -304,6 +304,11 @@ function Dashboard() {
           )}
 
           <div className="menu-section">
+            <button onClick={() => { navigate('/messages'); setMenuOpen(false); }} className="menu-item">
+              <span className="menu-item-icon">✉️</span>
+              <span>{t('messages.title')}</span>
+            </button>
+
             <button onClick={toggleRole} className="menu-item" title={t('dashboard.testMode.tooltip')}>
               <span className="menu-item-icon">🔄</span>
               <span>{userRole === 'staff' ? t('dashboard.testMode.switchToParent') : t('dashboard.testMode.switchToStaff')}</span>

@@ -6,7 +6,8 @@
     "edit": "Edytuj",
     "back": "Wstecz",
     "yes": "Tak",
-    "no": "Nie"
+    "no": "Nie",
+    "unknown": "Nieznany"
   },
   "app": {
     "title": "Lista obecności",
@@ -277,6 +278,26 @@
       "invalidEmail": "Nieprawidłowy adres e-mail",
       "weakPassword": "Hasło jest za słabe. Wybierz silniejsze hasło.",
       "failed": "Nie można zarejestrować. Spróbuj ponownie."
+    }
+  },
+  "messages": {
+    "title": "Wiadomości",
+    "conversations": "Rozmowy",
+    "noConversations": "Brak rozmów",
+    "noMessages": "Brak wiadomości",
+    "selectConversation": "Wybierz rozmowę, aby rozpocząć",
+    "startConversation": "Rozpocznij rozmowę",
+    "newConversation": "Nowa rozmowa",
+    "searchConversations": "Szukaj rozmów...",
+    "searchChildren": "Szukaj dzieci...",
+    "typeMessage": "Wpisz wiadomość...",
+    "justNow": "Teraz",
+    "yesterday": "Wczoraj",
+    "fromStaff": "Pracownik",
+    "fromParent": "Rodzic",
+    "broadcastInfo": "To są ogłoszenia z przedszkola. Tylko pracownicy mogą wysyłać wiadomości tutaj.",
+    "errors": {
+      "sendFailed": "Nie można wysłać wiadomości. Spróbuj ponownie."
     }
   }
 }

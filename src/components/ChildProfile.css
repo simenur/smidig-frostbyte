@@ -150,6 +150,16 @@
   box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
 }
 
+.message-button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.message-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
 .info-section {
   background: var(--card-bg);
   padding: 2rem;

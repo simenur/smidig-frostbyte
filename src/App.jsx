@@ -11,6 +11,7 @@ import ChangePassword from './components/ChangePassword';
 import AddChild from './components/AddChild';
 import AddParent from './components/AddParent';
 import PendingParents from './components/PendingParents';
+import Messages from './components/Messages';
 import './i18n'; // Initialize i18next
 import './App.css';
 
@@ -77,6 +78,10 @@ function App() {
         <Route
           path="/pending-parents"
           element={user ? <PendingParents /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/messages"
+          element={user ? <Messages /> : <Navigate to="/login" />}
         />
         <Route
           path="/"

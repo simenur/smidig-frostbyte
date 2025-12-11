@@ -6,7 +6,8 @@
     "edit": "Rediger",
     "back": "Tilbake",
     "yes": "Ja",
-    "no": "Nei"
+    "no": "Nei",
+    "unknown": "Ukjent"
   },
   "app": {
     "title": "Krysselista",
@@ -90,7 +91,8 @@
     },
     "actions": {
       "checkIn": "Kryss inn",
-      "checkOut": "Kryss ut"
+      "checkOut": "Kryss ut",
+      "sendMessage": "Send melding"
     },
     "info": {
       "title": "Informasjon",
@@ -277,6 +279,26 @@
       "invalidEmail": "Ugyldig e-postadresse",
       "weakPassword": "Passordet er for svakt. Velg et sterkere passord.",
       "failed": "Kunne ikke registrere deg. Prøv igjen."
+    }
+  },
+  "messages": {
+    "title": "Meldinger",
+    "conversations": "Samtaler",
+    "noConversations": "Ingen samtaler ennå",
+    "noMessages": "Ingen meldinger ennå",
+    "selectConversation": "Velg en samtale for å starte",
+    "startConversation": "Start en samtale",
+    "newConversation": "Ny samtale",
+    "searchConversations": "Søk i samtaler...",
+    "searchChildren": "Søk etter barn...",
+    "typeMessage": "Skriv en melding...",
+    "justNow": "Nå nettopp",
+    "yesterday": "I går",
+    "fromStaff": "Ansatt",
+    "fromParent": "Forelder",
+    "broadcastInfo": "Dette er kunngjøringer fra barnehagen. Kun ansatte kan sende meldinger her.",
+    "errors": {
+      "sendFailed": "Kunne ikke sende melding. Prøv igjen."
     }
   }
 }

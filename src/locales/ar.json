@@ -6,7 +6,8 @@
     "edit": "تحرير",
     "back": "رجوع",
     "yes": "نعم",
-    "no": "لا"
+    "no": "لا",
+    "unknown": "غير معروف"
   },
   "app": {
     "title": "قائمة الحضور",
@@ -277,6 +278,26 @@
       "invalidEmail": "عنوان بريد إلكتروني غير صالح",
       "weakPassword": "كلمة المرور ضعيفة جداً. اختر كلمة مرور أقوى.",
       "failed": "تعذر التسجيل. حاول مرة أخرى."
+    }
+  },
+  "messages": {
+    "title": "الرسائل",
+    "conversations": "المحادثات",
+    "noConversations": "لا توجد محادثات بعد",
+    "noMessages": "لا توجد رسائل بعد",
+    "selectConversation": "اختر محادثة للبدء",
+    "startConversation": "ابدأ محادثة",
+    "newConversation": "محادثة جديدة",
+    "searchConversations": "ابحث في المحادثات...",
+    "searchChildren": "ابحث عن الأطفال...",
+    "typeMessage": "اكتب رسالة...",
+    "justNow": "الآن",
+    "yesterday": "أمس",
+    "fromStaff": "الموظفين",
+    "fromParent": "ولي الأمر",
+    "broadcastInfo": "هذه إعلانات من الروضة. يمكن للموظفين فقط إرسال الرسائل هنا.",
+    "errors": {
+      "sendFailed": "تعذر إرسال الرسالة. حاول مرة أخرى."
     }
   }
 }

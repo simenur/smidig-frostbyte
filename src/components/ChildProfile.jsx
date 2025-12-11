@@ -261,6 +261,20 @@ function ChildProfile() {
                 {t('profile.actions.checkIn')}
               </button>
             )}
+            {userRole === 'staff' && (
+              <button
+                onClick={() => navigate('/messages', {
+                  state: {
+                    childId: child.id,
+                    childName: child.name,
+                    department: child.department
+                  }
+                })}
+                className="message-button"
+              >
+                ✉️ {t('profile.actions.sendMessage')}
+              </button>
+            )}
           </div>
         </div>
 

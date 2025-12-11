@@ -6,7 +6,8 @@
     "edit": "Edit",
     "back": "Back",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "unknown": "Unknown"
   },
   "app": {
     "title": "Check-in List",
@@ -90,7 +91,8 @@
     },
     "actions": {
       "checkIn": "Check in",
-      "checkOut": "Check out"
+      "checkOut": "Check out",
+      "sendMessage": "Send message"
     },
     "info": {
       "title": "Information",
@@ -277,6 +279,26 @@
       "invalidEmail": "Invalid email address",
       "weakPassword": "Password is too weak. Choose a stronger password.",
       "failed": "Could not register. Please try again."
+    }
+  },
+  "messages": {
+    "title": "Messages",
+    "conversations": "Conversations",
+    "noConversations": "No conversations yet",
+    "noMessages": "No messages yet",
+    "selectConversation": "Select a conversation to start",
+    "startConversation": "Start a conversation",
+    "newConversation": "New conversation",
+    "searchConversations": "Search conversations...",
+    "searchChildren": "Search for children...",
+    "typeMessage": "Type a message...",
+    "justNow": "Just now",
+    "yesterday": "Yesterday",
+    "fromStaff": "Staff",
+    "fromParent": "Parent",
+    "broadcastInfo": "These are announcements from the kindergarten. Only staff can send messages here.",
+    "errors": {
+      "sendFailed": "Could not send message. Please try again."
     }
   }
 }
