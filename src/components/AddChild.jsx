@@ -33,8 +33,9 @@ function AddChild() {
   });
 
   const [parents, setParents] = useState([
-    { email: '', name: '', phone: '' }
+    { email: '', name: '', phone: '', loading: false, found: false }
   ]);
+  const [searchTimeouts, setSearchTimeouts] = useState({});
 
   useEffect(() => {
     const checkUserRole = async () => {
@@ -92,10 +93,106 @@ function AddChild() {
       updated[index][field] = value;
       return updated;
     });
+
+    // If email field changed, try to auto-fill from database with debounce
+    if (field === 'email' && value.trim()) {
+      // Clear existing timeout for this parent index
+      if (searchTimeouts[index]) {
+        clearTimeout(searchTimeouts[index]);
+      }
+
+      // Set new timeout (500ms debounce)
+      const timeoutId = setTimeout(() => {
+        searchAndFillParentData(index, value.trim().toLowerCase());
+      }, 500);
+
+      setSearchTimeouts(prev => ({
+        ...prev,
+        [index]: timeoutId
+      }));
+    } else if (field === 'email' && !value.trim()) {
+      // Clear loading/found state if email is cleared
+      setParents(prev => {
+        const updated = [...prev];
+        updated[index].loading = false;
+        updated[index].found = false;
+        return updated;
+      });
+    }
+  };
+
+  // Search for parent in database and auto-fill if found
+  const searchAndFillParentData = async (index, email) => {
+    // Set loading state
+    setParents(prev => {
+      const updated = [...prev];
+      updated[index].loading = true;
+      updated[index].found = false;
+      return updated;
+    });
+
+    try {
+      // Search in users collection first
+      const usersQuery = query(
+        collection(db, 'users'),
+        where('email', '==', email)
+      );
+      const usersSnapshot = await getDocs(usersQuery);
+
+      if (!usersSnapshot.empty) {
+        const userData = usersSnapshot.docs[0].data();
+        setParents(prev => {
+          const updated = [...prev];
+          updated[index].name = userData.name || '';
+          updated[index].phone = userData.phone || '';
+          updated[index].loading = false;
+          updated[index].found = true;
+          return updated;
+        });
+        return;
+      }
+
+      // If not found in users, search in pendingParents
+      const pendingQuery = query(
+        collection(db, 'pendingParents'),
+        where('email', '==', email)
+      );
+      const pendingSnapshot = await getDocs(pendingQuery);
+
+      if (!pendingSnapshot.empty) {
+        const pendingData = pendingSnapshot.docs[0].data();
+        setParents(prev => {
+          const updated = [...prev];
+          updated[index].name = pendingData.name || '';
+          updated[index].phone = pendingData.phone || '';
+          updated[index].loading = false;
+          updated[index].found = true;
+          return updated;
+        });
+        return;
+      }
+
+      // Not found in either collection
+      setParents(prev => {
+        const updated = [...prev];
+        updated[index].loading = false;
+        updated[index].found = false;
+        return updated;
+      });
+
+    } catch (error) {
+      console.error('Error searching for parent:', error);
+      setParents(prev => {
+        const updated = [...prev];
+        updated[index].loading = false;
+        updated[index].found = false;
+        return updated;
+      });
+    }
   };
 
   const addParent = () => {
-    setParents(prev => [...prev, { email: '', name: '', phone: '' }]);
+    setParents(prev => [...prev, { email: '', name: '', phone: '', loading: false, found: false }]);
   };
 
   const removeParent = (index) => {
@@ -216,7 +313,7 @@ function AddChild() {
           email: ''
         }
       });
-      setParents([{ email: '', name: '', phone: '' }]);
+      setParents([{ email: '', name: '', phone: '', loading: false, found: false }]);
 
       // Redirect to dashboard after 2 seconds
       setTimeout(() => {
@@ -323,14 +420,22 @@ function AddChild() {
                   <label htmlFor={`parent-email-${index}`}>
                     {t('addChild.parents.email')} <span className="required">*</span>
                   </label>
-                  <input
-                    type="email"
-                    id={`parent-email-${index}`}
-                    value={parent.email}
-                    onChange={(e) => handleParentChange(index, 'email', e.target.value)}
-                    placeholder={t('addChild.parents.emailPlaceholder')}
-                    disabled={submitting}
-                  />
+                  <div className="input-with-feedback">
+                    <input
+                      type="email"
+                      id={`parent-email-${index}`}
+                      value={parent.email}
+                      onChange={(e) => handleParentChange(index, 'email', e.target.value)}
+                      placeholder={t('addChild.parents.emailPlaceholder')}
+                      disabled={submitting}
+                    />
+                    {parent.loading && (
+                      <span className="input-feedback loading">⏳</span>
+                    )}
+                    {!parent.loading && parent.found && (
+                      <span className="input-feedback success">✓</span>
+                    )}
+                  </div>
                 </div>
 
                 <div className="form-group">

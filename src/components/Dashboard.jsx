@@ -27,6 +27,7 @@ function Dashboard() {
   const [departmentStaff, setDepartmentStaff] = useState([]); // Staff in selected department
   const [testParentMode, setTestParentMode] = useState(false); // Flag for test parent mode
   const [languageDropdownOpen, setLanguageDropdownOpen] = useState(false); // Language dropdown state
+  const [menuOpen, setMenuOpen] = useState(false); // Mobile menu state
 
   useEffect(() => {
     if (!auth.currentUser) {
@@ -268,69 +269,96 @@ function Dashboard() {
   return (
     <div className="dashboard-container">
       <header className="dashboard-header">
+        <button onClick={() => setMenuOpen(!menuOpen)} className="hamburger-button" aria-label="Menu">
+          <span className="hamburger-icon">☰</span>
+        </button>
+
         <div className="header-brand">
           <img src={logo} alt="Logo" className="header-logo" />
           <div>
             <h1>{t('dashboard.header.title')}</h1>
             <p className="subtitle">{t('dashboard.header.subtitle')}</p>
-            {userRole && (
-              <p className="role-badge">
+          </div>
+        </div>
+
+        <button onClick={toggleTheme} className="theme-button" title={theme === 'light' ? t('dashboard.theme.switchToDark') : t('dashboard.theme.switchToLight')}>
+          {theme === 'light' ? '🌙' : '☀️'}
+        </button>
+      </header>
+
+      {/* Mobile Drawer Menu */}
+      {menuOpen && <div className="menu-overlay" onClick={() => setMenuOpen(false)} />}
+      <nav className={`mobile-menu ${menuOpen ? 'open' : ''}`}>
+        <div className="mobile-menu-header">
+          <h2>{t('dashboard.menu.title')}</h2>
+          <button onClick={() => setMenuOpen(false)} className="close-menu-button">✕</button>
+        </div>
+
+        <div className="mobile-menu-content">
+          {userRole && (
+            <div className="menu-user-info">
+              <p className="menu-role-badge">
                 {userRole === 'staff' ? t('dashboard.header.roleStaff') : t('dashboard.header.roleParent')}
               </p>
-            )}
-          </div>
-        </div>
-        <div className="header-actions">
-          <button onClick={toggleRole} className="dev-toggle-button" title={t('dashboard.testMode.tooltip')}>
-            {userRole === 'staff' ? t('dashboard.testMode.switchToParent') : t('dashboard.testMode.switchToStaff')}
-          </button>
-
-          {/* Language Dropdown */}
-          <div className="language-dropdown">
-            <button
-              onClick={() => setLanguageDropdownOpen(!languageDropdownOpen)}
-              className="language-button"
-              aria-label="Select language"
-            >
-              {getCurrentLanguage().flag} {getCurrentLanguage().name}
-            </button>
-            {languageDropdownOpen && (
-              <div className="language-dropdown-menu">
-                {languages.map(lang => (
-                  <button
-                    key={lang.code}
-                    onClick={() => changeLanguage(lang.code)}
-                    className={`language-option ${i18n.language === lang.code ? 'active' : ''}`}
-                  >
-                    <span className="language-flag">{lang.flag}</span>
-                    <span className="language-name">{lang.name}</span>
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <button onClick={toggleTheme} className="theme-button" title={theme === 'light' ? t('dashboard.theme.switchToDark') : t('dashboard.theme.switchToLight')}>
-            {theme === 'light' ? '🌙' : '☀️'}
-          </button>
-          <button onClick={() => navigate('/change-password')} className="change-password-button" title={t('changePassword.title')}>
-            {t('changePassword.title')}
-          </button>
-          {userRole === 'staff' && (
-            <>
-              <button onClick={() => navigate('/add-child')} className="add-child-button" title={t('addChild.title')}>
-                {t('addChild.title')}
-              </button>
-              <button onClick={() => navigate('/add-parent')} className="add-parent-button" title={t('addParent.title')}>
-                {t('addParent.title')}
-              </button>
-            </>
+            </div>
           )}
-          <button onClick={handleLogout} className="logout-button">
-            {t('auth.logout')}
-          </button>
+
+          <div className="menu-section">
+            <button onClick={toggleRole} className="menu-item" title={t('dashboard.testMode.tooltip')}>
+              <span className="menu-item-icon">🔄</span>
+              <span>{userRole === 'staff' ? t('dashboard.testMode.switchToParent') : t('dashboard.testMode.switchToStaff')}</span>
+            </button>
+
+            {/* Language Selection */}
+            <div className="menu-language-section">
+              <p className="menu-section-title">{t('dashboard.menu.language')}</p>
+              {languages.map(lang => (
+                <button
+                  key={lang.code}
+                  onClick={() => {
+                    changeLanguage(lang.code);
+                    setMenuOpen(false);
+                  }}
+                  className={`menu-language-item ${i18n.language === lang.code ? 'active' : ''}`}
+                >
+                  <span className="language-flag">{lang.flag}</span>
+                  <span className="language-name">{lang.name}</span>
+                  {i18n.language === lang.code && <span className="checkmark">✓</span>}
+                </button>
+              ))}
+            </div>
+
+            {userRole === 'staff' && (
+              <>
+                <div className="menu-divider" />
+                <p className="menu-section-title">{t('dashboard.menu.adminActions')}</p>
+                <button onClick={() => { navigate('/add-child'); setMenuOpen(false); }} className="menu-item">
+                  <span className="menu-item-icon">➕</span>
+                  <span>{t('addChild.title')}</span>
+                </button>
+                <button onClick={() => { navigate('/add-parent'); setMenuOpen(false); }} className="menu-item">
+                  <span className="menu-item-icon">👤</span>
+                  <span>{t('addParent.title')}</span>
+                </button>
+                <button onClick={() => { navigate('/pending-parents'); setMenuOpen(false); }} className="menu-item">
+                  <span className="menu-item-icon">⏳</span>
+                  <span>{t('pendingParents.title')}</span>
+                </button>
+              </>
+            )}
+
+            <div className="menu-divider" />
+            <button onClick={() => { navigate('/change-password'); setMenuOpen(false); }} className="menu-item">
+              <span className="menu-item-icon">🔑</span>
+              <span>{t('changePassword.title')}</span>
+            </button>
+            <button onClick={handleLogout} className="menu-item logout">
+              <span className="menu-item-icon">🚪</span>
+              <span>{t('auth.logout')}</span>
+            </button>
+          </div>
         </div>
-      </header>
+      </nav>
 
       <main className="dashboard-main">
         {userRole === 'staff' && (

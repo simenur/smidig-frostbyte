@@ -20,7 +20,9 @@
     "loggingIn": "Logging in...",
     "loginError": "Incorrect username or password",
     "emailPlaceholder": "your@email.com",
-    "passwordPlaceholder": "••••••••"
+    "passwordPlaceholder": "••••••••",
+    "noAccount": "Don't have an account?",
+    "registerLink": "Register here"
   },
   "dashboard": {
     "header": {
@@ -28,6 +30,11 @@
       "subtitle": "Eventyrhagen Kindergarten",
       "roleStaff": "👨‍💼 Staff",
       "roleParent": "👨‍👩‍👧 Parent"
+    },
+    "menu": {
+      "title": "Menu",
+      "language": "Language",
+      "adminActions": "Administration"
     },
     "theme": {
       "switchToLight": "Switch to light mode",
@@ -120,6 +127,15 @@
       "updateError": "Could not update information. Please try again.",
       "checkInError": "Could not check in. Please try again.",
       "checkOutError": "Could not check out. Please try again."
+    },
+    "delete": {
+      "dangerZoneTitle": "Danger Zone",
+      "dangerZoneDescription": "Deleting the child is permanent and cannot be undone. All data about the child, including activity logs, will be deleted.",
+      "deleteButton": "Delete child",
+      "confirmMessage": "Are you sure you want to delete {{name}}? This cannot be undone.",
+      "doubleConfirm": "This will permanently delete all data about the child. Are you absolutely sure?",
+      "success": "{{name}} was deleted from the system.",
+      "error": "Could not delete child"
     }
   },
   "activityLog": {
@@ -182,6 +198,23 @@
       "failed": "Could not add parent"
     }
   },
+  "pendingParents": {
+    "title": "Pending Parents",
+    "subtitle": "Overview of pending parents",
+    "description": "Here you can see all parents who are registered but have not yet completed registration. These parents must receive an email invitation to create their own account.",
+    "noPending": "No pending parents",
+    "addedOn": "Added on",
+    "deleteButton": "Delete",
+    "delete": {
+      "confirm": "Are you sure you want to delete {{name}}?",
+      "success": "{{name}} was deleted from pending parents.",
+      "error": "Could not delete parent"
+    },
+    "infoBox": {
+      "title": "About pending parents",
+      "description": "Parents added here must receive an email invitation from you to complete registration. You can send them an invitation manually to the email address listed. Once they have created their account they will automatically get access to their children."
+    }
+  },
   "addChild": {
     "title": "Add Child",
     "subtitle": "Register new child",
@@ -224,6 +257,26 @@
       "parentEmailRequired": "At least one parent with email and name is required",
       "noValidParents": "No valid parents found",
       "failed": "Could not add child. Please try again."
+    }
+  },
+  "register": {
+    "title": "Register",
+    "subtitle": "Create your parent account",
+    "description": "You must be invited by the kindergarten to register. Use the email address registered by the kindergarten.",
+    "confirmPassword": "Confirm password",
+    "confirmPasswordPlaceholder": "Enter password again",
+    "registerButton": "Register",
+    "registering": "Registering...",
+    "alreadyHaveAccount": "Already have an account?",
+    "errors": {
+      "allFieldsRequired": "All fields are required",
+      "passwordTooShort": "Password must be at least 6 characters",
+      "passwordsDontMatch": "Passwords do not match",
+      "notInvited": "This email is not invited. Contact the kindergarten to be added.",
+      "emailInUse": "This email address is already in use",
+      "invalidEmail": "Invalid email address",
+      "weakPassword": "Password is too weak. Choose a stronger password.",
+      "failed": "Could not register. Please try again."
     }
   }
 }

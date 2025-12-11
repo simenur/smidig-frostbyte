@@ -20,7 +20,9 @@
     "loggingIn": "Logowanie...",
     "loginError": "Nieprawidłowa nazwa użytkownika lub hasło",
     "emailPlaceholder": "twoj@email.pl",
-    "passwordPlaceholder": "••••••••"
+    "passwordPlaceholder": "••••••••",
+    "noAccount": "Nie masz konta?",
+    "registerLink": "Zarejestruj się tutaj"
   },
   "dashboard": {
     "header": {
@@ -28,6 +30,11 @@
       "subtitle": "Przedszkole Eventyrhagen",
       "roleStaff": "👨‍💼 Pracownik",
       "roleParent": "👨‍👩‍👧 Rodzic"
+    },
+    "menu": {
+      "title": "Menu",
+      "language": "Język",
+      "adminActions": "Administracja"
     },
     "theme": {
       "switchToLight": "Przełącz na tryb jasny",
@@ -120,6 +127,15 @@
       "updateError": "Nie można zaktualizować informacji. Spróbuj ponownie.",
       "checkInError": "Nie można zapisać. Spróbuj ponownie.",
       "checkOutError": "Nie można wypisać. Spróbuj ponownie."
+    },
+    "delete": {
+      "dangerZoneTitle": "Strefa Niebezpieczna",
+      "dangerZoneDescription": "Usunięcie dziecka jest trwałe i nie można go cofnąć. Wszystkie dane o dziecku, w tym dzienniki aktywności, zostaną usunięte.",
+      "deleteButton": "Usuń dziecko",
+      "confirmMessage": "Czy na pewno chcesz usunąć {{name}}? Nie można tego cofnąć.",
+      "doubleConfirm": "Spowoduje to trwałe usunięcie wszystkich danych o dziecku. Czy jesteś absolutnie pewien?",
+      "success": "{{name}} został usunięty z systemu.",
+      "error": "Nie można usunąć dziecka"
     }
   },
   "activityLog": {
@@ -182,6 +198,23 @@
       "failed": "Nie można dodać rodzica"
     }
   },
+  "pendingParents": {
+    "title": "Oczekujący rodzice",
+    "subtitle": "Przegląd oczekujących rodziców",
+    "description": "Tutaj możesz zobaczyć wszystkich rodziców, którzy są zarejestrowani, ale jeszcze nie ukończyli rejestracji. Ci rodzice muszą otrzymać zaproszenie e-mailem, aby utworzyć własne konto.",
+    "noPending": "Brak oczekujących rodziców",
+    "addedOn": "Dodano",
+    "deleteButton": "Usuń",
+    "delete": {
+      "confirm": "Czy na pewno chcesz usunąć {{name}}?",
+      "success": "{{name}} został usunięty z oczekujących rodziców.",
+      "error": "Nie można usunąć rodzica"
+    },
+    "infoBox": {
+      "title": "O oczekujących rodzicach",
+      "description": "Rodzice dodani tutaj muszą otrzymać od ciebie zaproszenie e-mailem, aby zakończyć rejestrację. Możesz wysłać im zaproszenie ręcznie na podany adres e-mail. Po utworzeniu konta automatycznie uzyskają dostęp do swoich dzieci."
+    }
+  },
   "addChild": {
     "title": "Dodaj dziecko",
     "subtitle": "Zarejestruj nowe dziecko",
@@ -224,6 +257,26 @@
       "parentEmailRequired": "Wymagany jest co najmniej jeden rodzic z adresem e-mail i imieniem",
       "noValidParents": "Nie znaleziono prawidłowych rodziców",
       "failed": "Nie można dodać dziecka. Spróbuj ponownie."
+    }
+  },
+  "register": {
+    "title": "Rejestracja",
+    "subtitle": "Utwórz konto rodzica",
+    "description": "Aby się zarejestrować, musisz być zaproszony przez przedszkole. Użyj adresu e-mail zarejestrowanego przez przedszkole.",
+    "confirmPassword": "Potwierdź hasło",
+    "confirmPasswordPlaceholder": "Wprowadź hasło ponownie",
+    "registerButton": "Zarejestruj się",
+    "registering": "Rejestrowanie...",
+    "alreadyHaveAccount": "Masz już konto?",
+    "errors": {
+      "allFieldsRequired": "Wszystkie pola są wymagane",
+      "passwordTooShort": "Hasło musi mieć co najmniej 6 znaków",
+      "passwordsDontMatch": "Hasła nie są zgodne",
+      "notInvited": "Ten e-mail nie jest zaproszony. Skontaktuj się z przedszkolem, aby zostać dodanym.",
+      "emailInUse": "Ten adres e-mail jest już używany",
+      "invalidEmail": "Nieprawidłowy adres e-mail",
+      "weakPassword": "Hasło jest za słabe. Wybierz silniejsze hasło.",
+      "failed": "Nie można zarejestrować. Spróbuj ponownie."
     }
   }
 }

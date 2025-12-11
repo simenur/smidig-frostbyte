@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useTranslation } from 'react-i18next';
 import { auth } from '../firebase';
@@ -6,6 +7,7 @@ import logo from '../assets/Logo.png';
 import './Login.css';
 
 function Login() {
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -67,6 +69,13 @@ function Login() {
             {loading ? t('auth.loggingIn') : t('auth.login')}
           </button>
         </form>
+
+        <div className="login-footer">
+          <p>{t('auth.noAccount')}</p>
+          <button onClick={() => navigate('/register')} className="register-link-button">
+            {t('auth.registerLink')}
+          </button>
+        </div>
       </div>
     </div>
   );

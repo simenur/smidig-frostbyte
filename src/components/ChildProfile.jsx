@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { doc, getDoc, updateDoc, Timestamp, addDoc, collection } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, Timestamp, addDoc, collection, deleteDoc, query, where, getDocs } from 'firebase/firestore';
 import { useTranslation } from 'react-i18next';
 import { auth, db } from '../firebase';
 import { useTheme } from '../context/ThemeContext';
@@ -155,6 +155,43 @@ function ChildProfile() {
     } catch (error) {
       console.error('Error updating child:', error);
       alert(t('profile.messages.updateError'));
+    }
+  };
+
+  const handleDelete = async () => {
+    // Confirmation dialog
+    const confirmMessage = t('profile.delete.confirmMessage', { name: child.name });
+    if (!window.confirm(confirmMessage)) {
+      return;
+    }
+
+    // Double confirmation for safety
+    const doubleConfirm = t('profile.delete.doubleConfirm');
+    if (!window.confirm(doubleConfirm)) {
+      return;
+    }
+
+    try {
+      // Delete all activity logs for this child
+      const logsQuery = query(
+        collection(db, 'activityLog'),
+        where('childId', '==', childId)
+      );
+      const logsSnapshot = await getDocs(logsQuery);
+
+      const deletePromises = logsSnapshot.docs.map(logDoc =>
+        deleteDoc(doc(db, 'activityLog', logDoc.id))
+      );
+      await Promise.all(deletePromises);
+
+      // Delete the child document
+      await deleteDoc(doc(db, 'children', childId));
+
+      alert(t('profile.delete.success', { name: child.name }));
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Error deleting child:', error);
+      alert(t('profile.delete.error') + ': ' + error.message);
     }
   };
 
@@ -365,6 +402,16 @@ function ChildProfile() {
             </div>
           </div>
         </div>
+
+        {userRole === 'staff' && (
+          <div className="danger-zone">
+            <h3>{t('profile.delete.dangerZoneTitle')}</h3>
+            <p className="danger-zone-description">{t('profile.delete.dangerZoneDescription')}</p>
+            <button onClick={handleDelete} className="delete-button">
+              {t('profile.delete.deleteButton')}
+            </button>
+          </div>
+        )}
 
         <ActivityLog childId={childId} />
       </main>

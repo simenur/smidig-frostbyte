@@ -4,11 +4,13 @@ import { auth } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useTranslation } from 'react-i18next';
 import Login from './components/Login';
+import Register from './components/Register';
 import Dashboard from './components/Dashboard';
 import ChildProfile from './components/ChildProfile';
 import ChangePassword from './components/ChangePassword';
 import AddChild from './components/AddChild';
 import AddParent from './components/AddParent';
+import PendingParents from './components/PendingParents';
 import './i18n'; // Initialize i18next
 import './App.css';
 
@@ -49,6 +51,10 @@ function App() {
           element={user ? <Navigate to="/dashboard" /> : <Login />}
         />
         <Route
+          path="/register"
+          element={user ? <Navigate to="/dashboard" /> : <Register />}
+        />
+        <Route
           path="/dashboard"
           element={user ? <Dashboard /> : <Navigate to="/login" />}
         />
@@ -67,6 +73,10 @@ function App() {
         <Route
           path="/add-parent"
           element={user ? <AddParent /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/pending-parents"
+          element={user ? <PendingParents /> : <Navigate to="/login" />}
         />
         <Route
           path="/"

@@ -20,7 +20,9 @@
     "loggingIn": "Logger inn...",
     "loginError": "Feil brukernavn eller passord",
     "emailPlaceholder": "din@epost.no",
-    "passwordPlaceholder": "••••••••"
+    "passwordPlaceholder": "••••••••",
+    "noAccount": "Har du ikke konto?",
+    "registerLink": "Registrer deg her"
   },
   "dashboard": {
     "header": {
@@ -28,6 +30,11 @@
       "subtitle": "Eventyrhagen Barnehage",
       "roleStaff": "👨‍💼 Ansatt",
       "roleParent": "👨‍👩‍👧 Forelder"
+    },
+    "menu": {
+      "title": "Meny",
+      "language": "Språk",
+      "adminActions": "Administrasjon"
     },
     "theme": {
       "switchToLight": "Bytt til lys modus",
@@ -120,6 +127,15 @@
       "updateError": "Kunne ikke oppdatere informasjonen. Prøv igjen.",
       "checkInError": "Kunne ikke krysse inn. Prøv igjen.",
       "checkOutError": "Kunne ikke krysse ut. Prøv igjen."
+    },
+    "delete": {
+      "dangerZoneTitle": "Advarsel",
+      "dangerZoneDescription": "Sletting av barnet er permanent og kan ikke angres. All data om barnet, inkludert aktivitetslogger, vil bli slettet.",
+      "deleteButton": "Slett barn",
+      "confirmMessage": "Er du sikker på at du vil slette {{name}}? Dette kan ikke angres.",
+      "doubleConfirm": "Dette vil permanent slette all data om barnet. Er du helt sikker?",
+      "success": "{{name}} ble slettet fra systemet.",
+      "error": "Kunne ikke slette barnet"
     }
   },
   "activityLog": {
@@ -182,6 +198,23 @@
       "failed": "Kunne ikke legge til forelder"
     }
   },
+  "pendingParents": {
+    "title": "Ventende foreldre",
+    "subtitle": "Oversikt over ventende foreldre",
+    "description": "Her kan du se alle foreldre som er registrert men som ennå ikke har fullført registreringen. Disse foreldrene må motta en invitasjon via e-post for å opprette sin egen konto.",
+    "noPending": "Ingen ventende foreldre",
+    "addedOn": "Lagt til",
+    "deleteButton": "Slett",
+    "delete": {
+      "confirm": "Er du sikker på at du vil slette {{name}}?",
+      "success": "{{name}} ble slettet fra ventende foreldre.",
+      "error": "Kunne ikke slette forelder"
+    },
+    "infoBox": {
+      "title": "Om ventende foreldre",
+      "description": "Foreldre som er lagt til her må motta en e-postinvitasjon fra deg for å fullføre registreringen. Du kan sende dem en invitasjon manuelt til e-postadressen som er oppført. Når de har opprettet sin konto vil de automatisk få tilgang til sine barn."
+    }
+  },
   "addChild": {
     "title": "Legg til barn",
     "subtitle": "Registrer nytt barn",
@@ -224,6 +257,26 @@
       "parentEmailRequired": "Minst én forelder med e-post og navn er påkrevd",
       "noValidParents": "Ingen gyldige foreldre funnet",
       "failed": "Kunne ikke legge til barn. Prøv igjen."
+    }
+  },
+  "register": {
+    "title": "Registrer deg",
+    "subtitle": "Opprett din foreldrekonto",
+    "description": "Du må være invitert av barnehagen for å registrere deg. Bruk e-postadressen som barnehagen har registrert.",
+    "confirmPassword": "Bekreft passord",
+    "confirmPasswordPlaceholder": "Skriv inn passord på nytt",
+    "registerButton": "Registrer deg",
+    "registering": "Registrerer...",
+    "alreadyHaveAccount": "Har du allerede konto?",
+    "errors": {
+      "allFieldsRequired": "Alle feltene er påkrevd",
+      "passwordTooShort": "Passordet må være minst 6 tegn",
+      "passwordsDontMatch": "Passordene er ikke like",
+      "notInvited": "Denne e-posten er ikke invitert. Kontakt barnehagen for å bli lagt til.",
+      "emailInUse": "Denne e-postadressen er allerede i bruk",
+      "invalidEmail": "Ugyldig e-postadresse",
+      "weakPassword": "Passordet er for svakt. Velg et sterkere passord.",
+      "failed": "Kunne ikke registrere deg. Prøv igjen."
     }
   }
 }

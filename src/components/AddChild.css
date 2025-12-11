@@ -121,6 +121,38 @@
   color: var(--text-secondary);
 }
 
+.input-with-feedback {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-with-feedback input {
+  flex: 1;
+  padding-right: 2.5rem;
+}
+
+.input-feedback {
+  position: absolute;
+  right: 0.75rem;
+  font-size: 1.2rem;
+  pointer-events: none;
+}
+
+.input-feedback.loading {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.input-feedback.success {
+  color: #4caf50;
+  font-weight: bold;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
 .field-help {
   color: var(--text-secondary);
   font-size: 0.85rem;
