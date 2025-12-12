@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { auth, db } from '../firebase';
 import { useTheme } from '../context/ThemeContext';
 import logo from '../assets/Logo.png';
+import BottomNav from './BottomNav';
 import './Dashboard.css';
 
 // Department constants
@@ -273,7 +274,7 @@ function Dashboard() {
           <span className="hamburger-icon">☰</span>
         </button>
 
-        <div className="header-brand">
+        <div className="header-brand" onClick={() => navigate('/dashboard')} style={{ cursor: 'pointer' }}>
           <img src={logo} alt="Logo" className="header-logo" />
           <div>
             <h1>{t('dashboard.header.title')}</h1>
@@ -307,6 +308,11 @@ function Dashboard() {
             <button onClick={() => { navigate('/messages'); setMenuOpen(false); }} className="menu-item">
               <span className="menu-item-icon">✉️</span>
               <span>{t('messages.title')}</span>
+            </button>
+
+            <button onClick={() => { navigate('/calendar'); setMenuOpen(false); }} className="menu-item">
+              <span className="menu-item-icon">📅</span>
+              <span>{t('calendar.title')}</span>
             </button>
 
             <button onClick={toggleRole} className="menu-item" title={t('dashboard.testMode.tooltip')}>
@@ -495,6 +501,7 @@ function Dashboard() {
           )}
         </div>
       </main>
+      <BottomNav />
     </div>
   );
 }

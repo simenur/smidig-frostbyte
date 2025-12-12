@@ -12,6 +12,7 @@ import AddChild from './components/AddChild';
 import AddParent from './components/AddParent';
 import PendingParents from './components/PendingParents';
 import Messages from './components/Messages';
+import Calendar from './components/Calendar';
 import './i18n'; // Initialize i18next
 import './App.css';
 
@@ -82,6 +83,10 @@ function App() {
         <Route
           path="/messages"
           element={user ? <Messages /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/calendar"
+          element={user ? <Calendar /> : <Navigate to="/login" />}
         />
         <Route
           path="/"

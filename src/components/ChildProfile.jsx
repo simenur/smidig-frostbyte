@@ -6,6 +6,7 @@ import { auth, db } from '../firebase';
 import { useTheme } from '../context/ThemeContext';
 import ActivityLog from './ActivityLog';
 import logo from '../assets/Logo.png';
+import BottomNav from './BottomNav';
 import './ChildProfile.css';
 
 function ChildProfile() {
@@ -225,7 +226,7 @@ function ChildProfile() {
         <button onClick={() => navigate('/dashboard')} className="back-button">
           ← {t('common.back')}
         </button>
-        <div className="header-brand">
+        <div className="header-brand" onClick={() => navigate('/dashboard')} style={{ cursor: 'pointer' }}>
           <img src={logo} alt="Logo" className="header-logo" />
           <h1>{t('profile.header.title')}</h1>
         </div>
@@ -429,6 +430,7 @@ function ChildProfile() {
 
         <ActivityLog childId={childId} />
       </main>
+      <BottomNav />
     </div>
   );
 }

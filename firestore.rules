@@ -1,0 +1,162 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Hjelpefunksjoner
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function getUserRole() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
+    }
+
+    function isStaff() {
+      return isSignedIn() && getUserRole() == 'staff';
+    }
+
+    function isParent() {
+      return isSignedIn() && getUserRole() == 'parent';
+    }
+
+    // Users collection
+    match /users/{userId} {
+      // Brukere kan lese sin egen profil
+      allow read: if isSignedIn() && request.auth.uid == userId;
+
+      // Ansatte kan lese alle brukerprofiler
+      allow read: if isStaff();
+
+      // NYE BRUKERE kan opprette sin egen profil
+      allow create: if isSignedIn() && 
+                       request.auth.uid == userId &&
+                       request.resource.data.role == 'parent';
+
+      // Brukere kan oppdatere sin egen profil
+      allow update: if isSignedIn() && request.auth.uid == userId;
+
+      // Ingen kan slette via appen
+      allow delete: if false;
+    }
+
+    // Children collection
+    match /children/{childId} {
+      // Ansatte kan lese alle barn
+      allow read: if isStaff();
+
+      // Foreldre kan kun lese barn de er knyttet til
+      allow read: if isParent() &&
+                     request.auth.uid in resource.data.parentIds;
+
+      // Oppdatering av barn - tillat check-in/out og profilinfo
+      allow update: if isSignedIn() &&
+                       (isStaff() || request.auth.uid in resource.data.parentIds) &&
+                       (request.resource.data.diff(resource.data).affectedKeys()
+                          .hasOnly(['checkedIn', 'lastCheckIn', 'lastCheckOut',
+                                   'allergies', 'notes', 'emergencyContact']));
+
+      // Ansatte kan opprette nye barn
+      allow create: if isStaff();
+
+      // Ansatte kan slette barn
+      allow delete: if isStaff();
+    }
+
+    // Logs collection
+    match /logs/{logId} {
+      // Alle autentiserte kan lese logger
+      allow read: if isSignedIn();
+
+      // Alle autentiserte kan opprette logger (ved inn/ut-kryssing)
+      allow create: if isSignedIn() &&
+                       request.resource.data.performedBy == request.auth.uid &&
+                       request.resource.data.keys().hasAll(['childId', 'childName', 'action', 'timestamp', 'performedBy', 'performedByEmail']) &&
+                       request.resource.data.action in ['check-in', 'check-out'];
+
+      // Ingen kan oppdatere eller slette logger
+      allow update, delete: if false;
+    }
+
+    // Activity Log collection
+    match /activityLog/{logId} {
+      // Ansatte kan lese alle logger
+      allow read: if isStaff();
+
+      // Foreldre kan lese logger for sine barn
+      allow read: if isParent() &&
+                     request.auth.uid in get(/databases/$(database)/documents/children/$(resource.data.childId)).data.parentIds;
+
+      // Alle autentiserte kan opprette logger
+      allow create: if isSignedIn() &&
+                       request.resource.data.performedBy == request.auth.uid;
+
+      // Ansatte kan slette logger (for GDPR)
+      allow delete: if isStaff();
+
+      // Ingen kan oppdatere logger
+      allow update: if false;
+    }
+
+    // Pending Parents collection
+    match /pendingParents/{parentId} {
+      // ALLE kan lese ventende foreldre (nødvendig for registrering)
+      allow read: if true;
+
+      // Kun ansatte kan opprette ventende foreldre
+      allow create: if isStaff();
+
+      // Ansatte kan slette ventende foreldre
+      allow delete: if isStaff();
+
+      // Nye brukere kan slette sin egen ventende forelder-post (etter registrering)
+      allow delete: if isSignedIn() && 
+                       request.auth.token.email == resource.data.email;
+
+      // Ingen kan oppdatere
+      allow update: if false;
+    }
+
+    // Messages collection
+    match /messages/{messageId} {
+      // Ansatte kan lese alle meldinger
+      allow read: if isStaff();
+      
+      // Foreldre kan lese alle meldinger (filtrering skjer client-side)
+      allow read: if isParent();
+      
+      // Foreldre kan opprette parent-to-staff meldinger
+      allow create: if isParent() && 
+                       request.resource.data.type == 'parent-to-staff' &&
+                       request.resource.data.from.uid == request.auth.uid;
+      
+      // Ansatte kan opprette staff-to-parent og staff-broadcast meldinger
+      allow create: if isStaff() && 
+                       request.resource.data.from.uid == request.auth.uid &&
+                       request.resource.data.type in ['staff-to-parent', 'staff-broadcast'];
+      
+      // Alle autentiserte kan oppdatere readBy array for å markere som lest
+      allow update: if isSignedIn() && 
+                       request.resource.data.diff(resource.data).affectedKeys().hasOnly(['readBy']);
+      
+      // Ansatte kan slette meldinger
+      allow delete: if isStaff();
+    }
+    // Events collection (Calendar)
+		match /events/{eventId} {
+  		// Alle autentiserte kan lese arrangementer
+  		allow read: if isSignedIn();
+
+  		// Kun ansatte kan opprette arrangementer
+  		allow create: if isStaff() &&
+      		             request.resource.data.createdBy == request.auth.uid &&
+          		         request.resource.data.keys().hasAll(['title', 'date', 'type', 'createdBy', 'createdAt']) &&
+              		     request.resource.data.type in ['event', 'holiday', 'meeting'];
+
+  		// Kun ansatte kan slette arrangementer
+  		allow delete: if isStaff();
+
+ 		 	// Ingen kan oppdatere arrangementer (må slettes og opprettes på nytt)
+  		allow update: if false;
+		}
+  }
+}

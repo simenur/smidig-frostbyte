@@ -300,5 +300,51 @@
     "errors": {
       "sendFailed": "Kunne ikke sende melding. Prøv igjen."
     }
+  },
+  "calendar": {
+    "title": "Kalender",
+    "addEvent": "Legg til arrangement",
+    "upcomingEvents": "Kommende arrangementer",
+    "noUpcoming": "Ingen kommende arrangementer",
+    "deleteConfirm": "Er du sikker på at du vil slette dette arrangementet?",
+    "departments": {
+      "all": "Alle avdelinger"
+    },
+    "weekdays": {
+      "sun": "Søn",
+      "mon": "Man",
+      "tue": "Tir",
+      "wed": "Ons",
+      "thu": "Tor",
+      "fri": "Fre",
+      "sat": "Lør"
+    },
+    "types": {
+      "event": "Arrangement",
+      "holiday": "Fridag",
+      "meeting": "Møte"
+    },
+    "form": {
+      "title": "Tittel",
+      "titlePlaceholder": "F.eks. Juleavslutning",
+      "date": "Dato",
+      "type": "Type",
+      "department": "Avdeling",
+      "description": "Beskrivelse",
+      "descriptionPlaceholder": "Ytterligere informasjon om arrangementet...",
+      "announceToChat": "Send kunngjøring til avdelingen",
+      "announcementText": "Meldingstekst",
+      "announcementPlaceholder": "Teksten som sendes til avdelingen...",
+      "submit": "Legg til arrangement"
+    },
+    "success": {
+      "eventAdded": "Arrangement lagt til!",
+      "eventDeleted": "Arrangement slettet!"
+    },
+    "errors": {
+      "requiredFields": "Tittel og dato er påkrevd",
+      "addFailed": "Kunne ikke legge til arrangement. Prøv igjen.",
+      "deleteFailed": "Kunne ikke slette arrangement. Prøv igjen."
+    }
   }
 }

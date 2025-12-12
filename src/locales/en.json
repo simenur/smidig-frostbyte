@@ -300,5 +300,51 @@
     "errors": {
       "sendFailed": "Could not send message. Please try again."
     }
+  },
+  "calendar": {
+    "title": "Calendar",
+    "addEvent": "Add event",
+    "upcomingEvents": "Upcoming events",
+    "noUpcoming": "No upcoming events",
+    "deleteConfirm": "Are you sure you want to delete this event?",
+    "departments": {
+      "all": "All departments"
+    },
+    "weekdays": {
+      "sun": "Sun",
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat"
+    },
+    "types": {
+      "event": "Event",
+      "holiday": "Holiday",
+      "meeting": "Meeting"
+    },
+    "form": {
+      "title": "Title",
+      "titlePlaceholder": "E.g. Christmas party",
+      "date": "Date",
+      "type": "Type",
+      "department": "Department",
+      "description": "Description",
+      "descriptionPlaceholder": "Additional information about the event...",
+      "announceToChat": "Send announcement to department",
+      "announcementText": "Announcement message",
+      "announcementPlaceholder": "Message to send to the department...",
+      "submit": "Add event"
+    },
+    "success": {
+      "eventAdded": "Event added!",
+      "eventDeleted": "Event deleted!"
+    },
+    "errors": {
+      "requiredFields": "Title and date are required",
+      "addFailed": "Could not add event. Please try again.",
+      "deleteFailed": "Could not delete event. Please try again."
+    }
   }
 }

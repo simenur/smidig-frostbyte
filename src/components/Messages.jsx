@@ -4,6 +4,7 @@ import { collection, query, onSnapshot, doc, getDoc, addDoc, Timestamp, updateDo
 import { useTranslation } from 'react-i18next';
 import { auth, db } from '../firebase';
 import logo from '../assets/Logo.png';
+import BottomNav from './BottomNav';
 import './Messages.css';
 
 function Messages() {
@@ -361,7 +362,7 @@ function Messages() {
         <button onClick={() => navigate('/dashboard')} className="back-button">
           ← {t('common.back')}
         </button>
-        <div className="header-brand">
+        <div className="header-brand" onClick={() => navigate('/dashboard')} style={{ cursor: 'pointer' }}>
           <img src={logo} alt="Logo" className="header-logo" />
           <h1>{t('messages.title')}</h1>
         </div>
@@ -490,12 +491,12 @@ function Messages() {
                         <div className={`message ${isOwn ? 'own' : 'other'}`}>
                           {!isOwn && (
                             <div className="message-avatar">
-                              {msg.from.name.charAt(0).toUpperCase()}
+                              {(msg.from?.name || msg.from?.email || '?').charAt(0).toUpperCase()}
                             </div>
                           )}
                           <div className="message-content">
                             {!isOwn && (
-                              <div className="message-sender">{msg.from.name}</div>
+                              <div className="message-sender">{msg.from?.name || msg.from?.email || t('common.unknown')}</div>
                             )}
                             <div className="message-bubble">
                               {msg.message}
@@ -604,6 +605,7 @@ function Messages() {
           </div>
         </div>
       )}
+      <BottomNav />
     </div>
   );
 }
