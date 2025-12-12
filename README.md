@@ -32,6 +32,20 @@ En moderne, mobil-vennlig applikasjon for å administrere inn- og ut-krysser i b
   - Oversikt over ventende foreldre
   - Slett ventende foreldre
 
+- **Meldingssystem**
+  - Send meldinger til spesifikke foreldre om deres barn
+  - Send kunngjøringer til hele avdelinger
+  - Se alle meldingssamtaler
+  - Automatisk markering av leste meldinger
+
+- **Kalender**
+  - Opprett arrangementer (arrangement, fridager, møter)
+  - Velg avdeling for arrangementer (alle eller spesifikk avdeling)
+  - Automatisk kunngjøring til avdelingschat når arrangement opprettes
+  - Redigerbar kunngjøringstekst
+  - Slett arrangementer
+  - Månedsvisning med event-indikatorer
+
 - **Aktivitetslogg**
   - Fullstendig historikk for hvert barn
   - Se hvem som krysset inn/ut og når
@@ -53,6 +67,16 @@ En moderne, mobil-vennlig applikasjon for å administrere inn- og ut-krysser i b
   - Kryss inn/ut egne barn
   - Automatisk logging
 
+- **Meldinger**
+  - Send meldinger til ansatte om spesifikke barn
+  - Motta kunngjøringer fra barnehagen (avdelingsspesifikke)
+  - Se alle meldingssamtaler for egne barn
+
+- **Kalender**
+  - Se alle kommende arrangementer
+  - Filtrer arrangementer basert på barnets avdeling
+  - Se detaljer om arrangementer (tittel, dato, type, beskrivelse)
+
 ### Generelle funksjoner
 
 - **Autentisering**
@@ -66,7 +90,7 @@ En moderne, mobil-vennlig applikasjon for å administrere inn- og ut-krysser i b
 
 - **Mobil-optimalisert**
   - Responsiv design for mobil, tablet og desktop
-  - Hamburger-meny for enkel navigasjon
+  - Bunnnavigasjon for enkel tilgang til hovedfunksjoner
   - Touch-vennlige knapper og elementer
 
 - **Flerspråklig støtte**
@@ -82,209 +106,164 @@ En moderne, mobil-vennlig applikasjon for å administrere inn- og ut-krysser i b
 - Kan krysse inn/ut alle barn
 - Kan legge til, redigere og slette barn
 - Kan legge til ventende foreldre
+- Kan sende meldinger til foreldre
+- Kan sende kunngjøringer til hele avdelinger
+- Kan opprette og slette kalenderarrangementer
 - Har tilgang til alle administrasjonsfunksjoner
 
 ### Parent (Foreldre)
 - Kan kun se egne barn
 - Kan krysse inn/ut egne barn
 - Kan oppdatere barnets allergier, notater og nødkontakt
+- Kan sende meldinger til ansatte om egne barn
+- Kan motta kunngjøringer fra barnehagen
+- Kan se kalenderarrangementer for barnets avdeling
 - Kan endre eget passord
 
-## 🔐 Registreringsflyt
+## 💬 Meldingssystem
 
-Systemet bruker en invitasjonsbasert registrering for foreldre:
+Applikasjonen har et komplett meldingssystem med ulike meldingstyper:
 
-### 1. Ansatt legger til forelder
-1. Ansatt navigerer til **Legg til forelder**
-2. Fyller inn e-post, navn og telefon
-3. Forelderen lagres som "ventende" i `pendingParents`-samlingen
+### Meldingstyper
 
-### 2. Ansatt sender invitasjon
-1. Ansatt sender manuell e-post til forelderen med link til `/register`
-2. Forelderen får beskjed om å opprette sin konto
+#### 1. Parent-to-Staff (Forelder til Ansatt)
+- Foreldre kan sende meldinger til ansatte om spesifikke barn
+- Meldinger er knyttet til et barn og en avdeling
+- Ansatte ser alle meldinger fra foreldre
 
-### 3. Forelder registrerer seg
-1. Forelderen går til registreringssiden
-2. Skriver inn samme e-postadresse som ansatt la til
-3. Velger passord (minimum 6 tegn)
-4. Systemet:
-   - Sjekker om e-posten finnes i `pendingParents`
-   - Oppretter Firebase Auth-bruker
-   - Oppretter `users`-dokument med role: 'parent'
-   - Sletter fra `pendingParents`
-   - Logger inn automatisk
+#### 2. Staff-to-Parent (Ansatt til Forelder)
+- Ansatte kan svare på meldinger fra foreldre
+- Meldinger sendes i samme samtale som forelderens melding
 
-### 4. Automatisk tilgang
-- Forelderen får automatisk tilgang til barn der deres UID er listet i `parentIds`
-- Ingen ekstra konfigurasjon nødvendig
+#### 3. Staff-Broadcast (Kunngjøringer)
+- Ansatte kan sende kunngjøringer til hele avdelinger
+- Foreldre ser kun kunngjøringer for avdelingene deres barn tilhører
+- Automatisk opprettet når arrangementer legges til i kalenderen
+
+### Funksjoner
+- **Sanntidsoppdateringer**: Meldinger oppdateres automatisk uten refresh
+- **Uleste meldinger**: Teller for uleste meldinger per samtale
+- **Søk**: Søk i samtaler etter barnenavn eller avdeling
+- **Automatisk markering**: Meldinger markeres automatisk som lest når de vises
+- **Mobil-optimalisert**: To-kolonne layout på desktop, full-screen på mobil
+
+## 📅 Kalendersystem
+
+Kalenderfunksjonen gir oversikt over viktige datoer og arrangementer i barnehagen.
+
+### Funksjoner for Ansatte
+
+#### Opprett arrangementer
+- **Tittel**: Navn på arrangementet (f.eks. "Juleavslutning")
+- **Dato**: Velg dato fra kalender eller klikk på en dag i månedsvisningen
+- **Type**: Velg mellom Arrangement, Fridag eller Møte
+- **Avdeling**: Velg hvilken avdeling arrangementet gjelder for
+  - Alle avdelinger
+  - Småbarna
+  - Mellombarna
+  - Storbarna
+- **Beskrivelse**: Legg til ytterligere informasjon (valgfritt)
+
+#### Automatiske kunngjøringer
+- Når et arrangement opprettes, kan ansatte velge å sende automatisk kunngjøring
+- Kunngjøringsteksten genereres automatisk med:
+  - Arrangementtype og tittel
+  - Dato (formatert på norsk)
+  - Beskrivelse (hvis tilgjengelig)
+- Teksten kan redigeres før sending
+- Kunngjøringen sendes til valgt avdelings chat
+
+#### Administrere arrangementer
+- Se alle kommende arrangementer i liste
+- Slett arrangementer som er kansellert
+- Månedsvisning med fargekodede event-indikatorer
+
+### Funksjoner for Foreldre
+- Se kalender med alle arrangementer
+- Automatisk filtrering basert på barnets avdeling
+- Se kommende arrangementer i liste
+- Motta kunngjøringer om nye arrangementer i meldingssystemet
+
+### Event-typer og farger
+- **Arrangement** (Blå): Generelle arrangementer og aktiviteter
+- **Fridag** (Rød): Fridager og stengt barnehage
+- **Møte** (Grønn): Foreldremøter og planleggingsmøter
+
+## 🔐 Hvordan foreldre får tilgang
+
+Systemet bruker en invitasjonsbasert registrering:
+
+1. **Ansatt legger til forelder**
+   - Går til "Legg til forelder"
+   - Fyller inn e-post, navn og telefon
+
+2. **Forelder mottar invitasjon**
+   - Får e-post med link til registrering
+   - Registrerer seg med samme e-post
+   - Velger eget passord
+
+3. **Automatisk tilgang**
+   - Forelderen får automatisk tilgang til sine barn
+   - Kan umiddelbart begynne å bruke appen
 
 ## 🛠 Teknologi
 
-### Frontend
-- **React 18** - UI framework
-- **React Router** - Navigasjon
-- **i18next** - Flerspråklig støtte
-- **Vite** - Build tool og dev server
+Applikasjonen er bygget med moderne web-teknologi:
 
-### Backend & Database
-- **Firebase Authentication** - Brukerautentisering
-- **Cloud Firestore** - NoSQL database
-  - Realtime updates
-  - Offline support
-  - Firestore Security Rules for tilgangskontroll
+- **React** - Frontend framework for brukergrensesnitt
+- **Firebase** - Backend for autentisering og database
+- **Responsive design** - Fungerer på mobil, tablet og desktop
+- **Flerspråklig** - Støtte for 4 språk
+- **Dark/Light mode** - Automatisk tilpasning til brukerens preferanser
 
-### Styling
-- **Custom CSS** - Med CSS variabler for theming
-- **Responsive Design** - Mobil-først tilnærming
-- **Dark/Light Mode** - Automatisk og manuell toggle
+## 📊 Database
 
-## 📊 Firestore struktur
+Applikasjonen bruker Firebase Firestore som database med følgende hovedsamlinger:
 
-### Collections
+- **users** - Brukerinformasjon (ansatte og foreldre)
+- **children** - Barneinformasjon med tilknytning til foreldre
+- **activityLog** - Historikk over inn/ut-krysser
+- **pendingParents** - Foreldre som venter på å fullføre registrering
+- **messages** - Meldinger og kunngjøringer
+- **events** - Kalenderarrangementer
 
-#### `users`
-Brukerinformasjon for både ansatte og foreldre.
+### Sikkerhet
+- Firebase Security Rules sikrer at foreldre kun ser egne barn
+- Ansatte har tilgang til all data
+- All data er beskyttet med autentisering
 
-```javascript
-{
-  uid: "abc123",
-  email: "user@example.com",
-  name: "Ola Nordmann",
-  phone: "12345678",
-  role: "staff" | "parent",
-  departments: ["Småbarna"], // Kun for staff
-  createdAt: Timestamp,
-  registeredAt: Timestamp
-}
-```
-
-#### `children`
-Informasjon om alle barn i barnehagen.
-
-```javascript
-{
-  id: "child123",
-  name: "Emma Hansen",
-  department: "Småbarna",
-  parentIds: ["uid1", "uid2"], // Array av foreldre-UIDs
-  parentInfo: [
-    { email: "parent@example.com", name: "...", phone: "..." }
-  ],
-  allergies: "Melk, nøtter",
-  notes: "Liker ikke gulrøtter",
-  emergencyContact: {
-    name: "Bestemor",
-    phone: "87654321",
-    email: "bestemor@example.com"
-  },
-  checkedIn: true,
-  lastCheckIn: Timestamp,
-  lastCheckOut: Timestamp,
-  createdAt: Timestamp,
-  createdBy: "staff_uid"
-}
-```
-
-#### `activityLog`
-Aktivitetslogg for alle inn/ut-krysser.
-
-```javascript
-{
-  id: "log123",
-  childId: "child123",
-  childName: "Emma Hansen",
-  action: "check-in" | "check-out",
-  timestamp: Timestamp,
-  performedBy: "user_uid",
-  performedByEmail: "staff@example.com"
-}
-```
-
-#### `pendingParents`
-Foreldre som er lagt til men ikke har fullført registrering.
-
-```javascript
-{
-  id: "pending123",
-  email: "parent@example.com",
-  name: "Kari Nordmann",
-  phone: "12345678",
-  role: "parent",
-  status: "pending",
-  createdAt: Timestamp,
-  createdBy: "staff_uid"
-}
-```
-
-## 🔒 Security Rules
-
-Firestore Security Rules sikrer at brukere kun har tilgang til data de skal ha tilgang til.
-
-### Viktige regler
-
-- **Users**: Brukere kan lese og oppdatere sin egen profil
-- **Children**:
-  - Staff kan lese/skrive alle barn
-  - Foreldre kan kun lese/oppdatere barn de er knyttet til
-- **ActivityLog**:
-  - Staff kan lese alle logger
-  - Foreldre kan lese logger for egne barn
-- **PendingParents**:
-  - Alle kan lese (for registrering)
-  - Kun staff kan opprette
-  - Staff og nye brukere kan slette egne
-
-Se full konfigurasjon i Firebase Console under **Firestore Database → Rules**.
-
-## 🌍 Flerspråklig støtte
+## 🌍 Språk
 
 Applikasjonen støtter fire språk:
+- Norsk (standard)
+- Engelsk
+- Polsk
+- Arabisk
 
-- **Norsk** (no) - Standard
-- **Engelsk** (en)
-- **Polsk** (pl)
-- **Arabisk** (ar) - Med RTL-støtte
+Språk kan enkelt byttes i menyen inne i applikasjonen.
 
-### Oversettingsfiler
+## 🚀 Kjøre applikasjonen
 
-Alle oversettelser ligger i `src/locales/`:
-- `no.json` - Norsk
-- `en.json` - Engelsk
-- `pl.json` - Polsk
-- `ar.json` - Arabisk
+Applikasjonen er allerede deployet og kjører med Firebase som backend.
 
+For å kjøre lokalt:
 
-## 📱 Mobil-optimalisering
-
-Applikasjonen er optimalisert for mobil med:
-
-- **Responsiv layout** - Tilpasser seg alle skjermstørrelser
-- **Touch-vennlige elementer** - Store knapper og god spacing
-- **Hamburger-meny** - Enkel navigasjon på mobil
-- **Rask lasting** - Lazy loading av komponenter
-- **Offline-støtte** - Firestore offline persistence
-
-## 🔧 Utviklingsmodus
-
-### Test-bruker toggle
-
-I utviklingsmodus kan ansatte toggle mellom staff- og parent-modus for testing:
-
-```javascript
-const TEST_PARENT_UID = 'VtDgO4jGy9Z8LncGTAx6r5zShIv1';
+1. Installer avhengigheter:
+```bash
+npm install
 ```
 
-Bytt til en test-forelder UID i `Dashboard.jsx` for testing.
+2. Start utviklingsserver:
+```bash
+npm run dev
+```
 
-## 📋 Planlagte funksjoner (TODO)
+Applikasjonen åpnes på `http://localhost:5173`
 
-Basert på kravspesifikasjonen er følgende funksjoner planlagt for fremtidig implementering:
+### Testbrukere
 
-- [ ] **Melding/Chat-system**
-  - Meldinger mellom foreldre og ansatte
-  - Markere meldinger som lest/ulest
+For testing av applikasjonen finnes det testbrukere med ulike roller i systemet.
 
-- [ ] **Kalender**
-  - Vise viktige datoer (fridager, arrangementer, etc.)
-  - Legge til arrangementer (kun ansatte)
-  - Foreldre kan se kommende arrangementer
+## 📝 Om prosjektet
+
+Dette prosjektet er utviklet som en del av et kurs i smidig utvikling. Applikasjonen demonstrerer et komplett system for barnehageadministrasjon med fokus på brukeropplevelse, sikkerhet og moderne web-teknologi.
