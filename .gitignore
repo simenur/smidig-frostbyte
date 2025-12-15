@@ -23,5 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 
-# Firebase setup documentation
+# Firebase
+.firebase/
 FIREBASE_SETUP.md
