@@ -13,9 +13,6 @@ import './Dashboard.css';
 // Department constants
 const DEPARTMENTS = ['Småbarna', 'Mellombarna', 'Storbarna'];
 
-// Test parent UID - used when toggling to parent mode for testing
-const TEST_PARENT_UID = 'VtDgO4jGy9Z8LncGTAx6r5zShIv1';
-
 function Dashboard() {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
@@ -28,7 +25,6 @@ function Dashboard() {
   const [filter, setFilter] = useState('all'); // 'all', 'checked-in', 'checked-out'
   const [selectedDepartment, setSelectedDepartment] = useState(DEPARTMENTS[0]); // Default to first department
   const [departmentStaff, setDepartmentStaff] = useState([]); // Staff in selected department
-  const [testParentMode, setTestParentMode] = useState(false); // Flag for test parent mode
   const [languageDropdownOpen, setLanguageDropdownOpen] = useState(false); // Language dropdown state
   const [menuOpen, setMenuOpen] = useState(false); // Mobile menu state
 
@@ -76,12 +72,10 @@ function Dashboard() {
       q = query(collection(db, 'children'));
     } else {
       // Parents only see their own children
-      // Use test parent UID when in test mode
-      const parentUid = testParentMode ? TEST_PARENT_UID : auth.currentUser.uid;
-      console.log('Parent mode: fetching children where parentIds contains', parentUid);
+      console.log('Parent mode: fetching children where parentIds contains', auth.currentUser.uid);
       q = query(
         collection(db, 'children'),
-        where('parentIds', 'array-contains', parentUid)
+        where('parentIds', 'array-contains', auth.currentUser.uid)
       );
     }
 
@@ -101,7 +95,7 @@ function Dashboard() {
     });
 
     return () => unsubscribe();
-  }, [userRole, testParentMode]);
+  }, [userRole]);
 
   // Fetch staff members for selected department (for staff users only)
   useEffect(() => {
@@ -195,17 +189,6 @@ function Dashboard() {
       await signOut(auth);
     } catch (error) {
       console.error('Logout error:', error);
-    }
-  };
-
-  // TESTING ONLY: Toggle between staff and parent roles
-  const toggleRole = () => {
-    const newRole = userRole === 'staff' ? 'parent' : 'staff';
-    setUserRole(newRole);
-    setTestParentMode(newRole === 'parent');
-    console.log('🔄 TESTING: Switched role to', newRole);
-    if (newRole === 'parent') {
-      console.log('🔄 TESTING: Using test parent UID:', TEST_PARENT_UID);
     }
   };
 
@@ -315,11 +298,6 @@ function Dashboard() {
             <button onClick={() => { navigate('/calendar'); setMenuOpen(false); }} className="menu-item">
               <span className="menu-item-icon">📅</span>
               <span>{t('calendar.title')}</span>
-            </button>
-
-            <button onClick={toggleRole} className="menu-item" title={t('dashboard.testMode.tooltip')}>
-              <span className="menu-item-icon">🔄</span>
-              <span>{userRole === 'staff' ? t('dashboard.testMode.switchToParent') : t('dashboard.testMode.switchToStaff')}</span>
             </button>
 
             {/* Language Selection */}
