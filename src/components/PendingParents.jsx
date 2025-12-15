@@ -4,6 +4,7 @@ import { collection, query, getDocs, deleteDoc, doc, getDoc } from 'firebase/fir
 import { useTranslation } from 'react-i18next';
 import { auth, db } from '../firebase';
 import { useTheme } from '../context/ThemeContext';
+import { useToast } from '../context/ToastContext';
 import logo from '../assets/Logo.png';
 import './PendingParents.css';
 
@@ -11,6 +12,7 @@ function PendingParents() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { theme, toggleTheme } = useTheme();
+  const { showSuccess, showError } = useToast();
   const [pendingParents, setPendingParents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [userRole, setUserRole] = useState(null);
@@ -63,10 +65,10 @@ function PendingParents() {
     try {
       await deleteDoc(doc(db, 'pendingParents', parentId));
       setPendingParents(pendingParents.filter(p => p.id !== parentId));
-      alert(t('pendingParents.delete.success', { name: parentName }));
+      showSuccess(t('pendingParents.delete.success', { name: parentName }));
     } catch (error) {
       console.error('Error deleting pending parent:', error);
-      alert(t('pendingParents.delete.error'));
+      showError(t('pendingParents.delete.error'));
     }
   };
 

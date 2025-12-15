@@ -5,6 +5,7 @@ import { collection, query, onSnapshot, doc, updateDoc, Timestamp, getDoc, where
 import { useTranslation } from 'react-i18next';
 import { auth, db } from '../firebase';
 import { useTheme } from '../context/ThemeContext';
+import { useToast } from '../context/ToastContext';
 import logo from '../assets/Logo.png';
 import BottomNav from './BottomNav';
 import './Dashboard.css';
@@ -19,6 +20,7 @@ function Dashboard() {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const { theme, toggleTheme } = useTheme();
+  const { showError } = useToast();
   const [children, setChildren] = useState([]);
   const [userRole, setUserRole] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -158,7 +160,7 @@ function Dashboard() {
       });
     } catch (error) {
       console.error('Error checking in:', error);
-      alert(t('dashboard.errors.checkInFailed'));
+      showError(t('dashboard.errors.checkInFailed'));
     }
   };
 
@@ -184,7 +186,7 @@ function Dashboard() {
       });
     } catch (error) {
       console.error('Error checking out:', error);
-      alert(t('dashboard.errors.checkOutFailed'));
+      showError(t('dashboard.errors.checkOutFailed'));
     }
   };
 
@@ -446,9 +448,15 @@ function Dashboard() {
 
         <div className="children-list">
           {filteredChildren.length === 0 ? (
-            <p className="empty-message">
-              {children.length === 0 ? t('dashboard.children.noChildren') : t('dashboard.children.noMatch')}
-            </p>
+            <div className="empty-state">
+              <div className="empty-state-icon">{children.length === 0 ? '👶' : '🔍'}</div>
+              <h3 className="empty-state-title">
+                {children.length === 0 ? t('dashboard.children.noChildren') : t('dashboard.children.noMatch')}
+              </h3>
+              {children.length === 0 && userRole === 'staff' && (
+                <p className="empty-state-description">{t('dashboard.children.noChildrenDescription')}</p>
+              )}
+            </div>
           ) : (
             filteredChildren.map((child) => (
               <div key={child.id} className={`child-card ${child.checkedIn ? 'checked-in' : 'checked-out'}`}>

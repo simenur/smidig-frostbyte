@@ -204,6 +204,7 @@
   color: var(--text-secondary);
   text-align: center;
   padding: 2rem;
+  animation: fadeIn 0.4s ease-out;
 }
 
 .events-list {
@@ -218,6 +219,7 @@
   padding: 1rem;
   border-radius: 0.5rem;
   transition: all 0.2s;
+  animation: fadeIn 0.3s ease-out;
 }
 
 .event-card.holiday {
@@ -446,9 +448,14 @@
   transition: all 0.2s;
 }
 
-.submit-button:hover {
+.submit-button:hover:not(:disabled) {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.submit-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .cancel-button {
@@ -463,9 +470,26 @@
   transition: all 0.2s;
 }
 
-.cancel-button:hover {
+.cancel-button:hover:not(:disabled) {
   background-color: var(--card-bg-hover);
   border-color: var(--text-secondary);
+}
+
+.cancel-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Mobile Responsive */

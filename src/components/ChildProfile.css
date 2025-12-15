@@ -73,6 +73,7 @@
   box-shadow: 0 2px 8px var(--card-shadow);
   text-align: center;
   margin-bottom: 2rem;
+  animation: fadeIn 0.3s ease-out;
 }
 
 .profile-avatar {
@@ -166,6 +167,7 @@
   border-radius: 1rem;
   box-shadow: 0 2px 8px var(--card-shadow);
   margin-bottom: 1.5rem;
+  animation: fadeIn 0.3s ease-out;
 }
 
 .info-section h3 {
@@ -262,9 +264,14 @@
   font-size: 1rem;
 }
 
-.save-button:hover {
+.save-button:hover:not(:disabled) {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.save-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .cancel-button {
@@ -280,9 +287,14 @@
   font-size: 1rem;
 }
 
-.cancel-button:hover {
+.cancel-button:hover:not(:disabled) {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(158, 158, 158, 0.3);
+}
+
+.cancel-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .save-button:active,
@@ -322,10 +334,15 @@
   font-size: 0.95rem;
 }
 
-.delete-button:hover {
+.delete-button:hover:not(:disabled) {
   background-color: #d32f2f;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(244, 67, 54, 0.4);
+}
+
+.delete-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .delete-button:active {
@@ -388,5 +405,17 @@
   .save-button,
   .cancel-button {
     width: 100%;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

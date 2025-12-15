@@ -4,6 +4,7 @@ import { collection, query, onSnapshot, addDoc, deleteDoc, doc, getDoc, Timestam
 import { useTranslation } from 'react-i18next';
 import { auth, db } from '../firebase';
 import { useTheme } from '../context/ThemeContext';
+import { useToast } from '../context/ToastContext';
 import logo from '../assets/Logo.png';
 import BottomNav from './BottomNav';
 import './Calendar.css';
@@ -12,10 +13,12 @@ function Calendar() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { theme, toggleTheme } = useTheme();
+  const { showSuccess, showError } = useToast();
   const [events, setEvents] = useState([]);
   const [userRole, setUserRole] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [newEvent, setNewEvent] = useState({
     title: '',
     description: '',
@@ -101,10 +104,11 @@ function Calendar() {
   const handleAddEvent = async (e) => {
     e.preventDefault();
     if (!newEvent.title || !newEvent.date) {
-      alert(t('calendar.errors.requiredFields'));
+      showError(t('calendar.errors.requiredFields'));
       return;
     }
 
+    setSubmitting(true);
     try {
       // Convert date string to Firestore Timestamp
       const eventDate = new Date(newEvent.date);
@@ -161,10 +165,12 @@ function Calendar() {
 
       setNewEvent({ title: '', description: '', date: '', type: 'event', department: 'all', announceEvent: true, announcementText: '' });
       setShowAddModal(false);
-      alert(t('calendar.success.eventAdded'));
+      showSuccess(t('calendar.success.eventAdded'));
     } catch (error) {
       console.error('Error adding event:', error);
-      alert(t('calendar.errors.addFailed'));
+      showError(t('calendar.errors.addFailed'));
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -173,10 +179,10 @@ function Calendar() {
 
     try {
       await deleteDoc(doc(db, 'events', eventId));
-      alert(t('calendar.success.eventDeleted'));
+      showSuccess(t('calendar.success.eventDeleted'));
     } catch (error) {
       console.error('Error deleting event:', error);
-      alert(t('calendar.errors.deleteFailed'));
+      showError(t('calendar.errors.deleteFailed'));
     }
   };
 
@@ -452,10 +458,10 @@ function Calendar() {
               )}
 
               <div className="modal-actions">
-                <button type="submit" className="submit-button">
-                  {t('calendar.form.submit')}
+                <button type="submit" className="submit-button" disabled={submitting}>
+                  {submitting ? t('common.loading') : t('calendar.form.submit')}
                 </button>
-                <button type="button" onClick={() => setShowAddModal(false)} className="cancel-button">
+                <button type="button" onClick={() => setShowAddModal(false)} className="cancel-button" disabled={submitting}>
                   {t('common.cancel')}
                 </button>
               </div>

@@ -4,6 +4,7 @@ import { collection, addDoc, doc, getDoc, setDoc } from 'firebase/firestore';
 import { useTranslation } from 'react-i18next';
 import { auth, db } from '../firebase';
 import { useTheme } from '../context/ThemeContext';
+import { useToast } from '../context/ToastContext';
 import logo from '../assets/Logo.png';
 import './AddParent.css';
 
@@ -11,6 +12,7 @@ function AddParent() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { theme, toggleTheme } = useTheme();
+  const { showSuccess } = useToast();
   const [userRole, setUserRole] = useState(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -129,7 +131,7 @@ function AddParent() {
         password: ''
       });
 
-      alert(t('addParent.pendingMessage', { email: formData.email }));
+      showSuccess(t('addParent.pendingMessage', { email: formData.email }));
 
       // Redirect to dashboard after 2 seconds
       setTimeout(() => {

@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { collection, query, onSnapshot, doc, getDoc, addDoc, Timestamp, updateDoc, arrayUnion, where, getDocs } from 'firebase/firestore';
 import { useTranslation } from 'react-i18next';
 import { auth, db } from '../firebase';
+import { useToast } from '../context/ToastContext';
 import logo from '../assets/Logo.png';
 import BottomNav from './BottomNav';
 import './Messages.css';
@@ -11,6 +12,7 @@ function Messages() {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
+  const { showError } = useToast();
   const [messages, setMessages] = useState([]);
   const [userRole, setUserRole] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -261,7 +263,7 @@ function Messages() {
       setNewMessageText('');
     } catch (error) {
       console.error('Error sending message:', error);
-      alert(t('messages.errors.sendFailed'));
+      showError(t('messages.errors.sendFailed'));
     } finally {
       setSending(false);
     }

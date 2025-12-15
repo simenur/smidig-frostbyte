@@ -4,6 +4,7 @@ import { doc, getDoc, updateDoc, Timestamp, addDoc, collection, deleteDoc, query
 import { useTranslation } from 'react-i18next';
 import { auth, db } from '../firebase';
 import { useTheme } from '../context/ThemeContext';
+import { useToast } from '../context/ToastContext';
 import ActivityLog from './ActivityLog';
 import logo from '../assets/Logo.png';
 import BottomNav from './BottomNav';
@@ -14,11 +15,14 @@ function ChildProfile() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { theme, toggleTheme } = useTheme();
+  const { showSuccess, showError } = useToast();
   const [child, setChild] = useState(null);
   const [loading, setLoading] = useState(true);
   const [userRole, setUserRole] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editedData, setEditedData] = useState({});
+  const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,7 +45,7 @@ function ChildProfile() {
           // Check if user has permission to view this child
           // Use the fetched role directly, not the state
           if (fetchedRole !== 'staff' && !childData.parentIds?.includes(auth.currentUser.uid)) {
-            alert(t('profile.messages.noAccess'));
+            showError(t('profile.messages.noAccess'));
             navigate('/dashboard');
             return;
           }
@@ -53,12 +57,12 @@ function ChildProfile() {
             emergencyContact: childData.emergencyContact || { name: '', phone: '', email: '' }
           });
         } else {
-          alert(t('profile.messages.notFound'));
+          showError(t('profile.messages.notFound'));
           navigate('/dashboard');
         }
       } catch (error) {
         console.error('Error fetching child:', error);
-        alert(t('profile.messages.loadError'));
+        showError(t('profile.messages.loadError'));
         navigate('/dashboard');
       } finally {
         setLoading(false);
@@ -92,7 +96,7 @@ function ChildProfile() {
       setChild({ ...child, checkedIn: true, lastCheckIn: now });
     } catch (error) {
       console.error('Error checking in:', error);
-      alert(t('profile.messages.checkInError'));
+      showError(t('profile.messages.checkInError'));
     }
   };
 
@@ -120,7 +124,7 @@ function ChildProfile() {
       setChild({ ...child, checkedIn: false, lastCheckOut: now });
     } catch (error) {
       console.error('Error checking out:', error);
-      alert(t('profile.messages.checkOutError'));
+      showError(t('profile.messages.checkOutError'));
     }
   };
 
@@ -137,6 +141,7 @@ function ChildProfile() {
   };
 
   const handleSave = async () => {
+    setSaving(true);
     try {
       const childRef = doc(db, 'children', childId);
       const updateData = {
@@ -152,10 +157,12 @@ function ChildProfile() {
       // Update local state
       setChild({ ...child, ...updateData });
       setIsEditing(false);
-      alert(t('profile.messages.updateSuccess'));
+      showSuccess(t('profile.messages.updateSuccess'));
     } catch (error) {
       console.error('Error updating child:', error);
-      alert(t('profile.messages.updateError'));
+      showError(t('profile.messages.updateError'));
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -188,11 +195,13 @@ function ChildProfile() {
       // Delete the child document
       await deleteDoc(doc(db, 'children', childId));
 
-      alert(t('profile.delete.success', { name: child.name }));
+      showSuccess(t('profile.delete.success', { name: child.name }));
       navigate('/dashboard');
     } catch (error) {
       console.error('Error deleting child:', error);
-      alert(t('profile.delete.error') + ': ' + error.message);
+      showError(t('profile.delete.error') + ': ' + error.message);
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -333,10 +342,10 @@ function ChildProfile() {
 
           {isEditing && (
             <div className="edit-actions">
-              <button onClick={handleSave} className="save-button">
-                {t('profile.editActions.save')}
+              <button onClick={handleSave} className="save-button" disabled={saving}>
+                {saving ? t('common.loading') : t('profile.editActions.save')}
               </button>
-              <button onClick={handleEditToggle} className="cancel-button">
+              <button onClick={handleEditToggle} className="cancel-button" disabled={saving}>
                 {t('profile.editActions.cancel')}
               </button>
             </div>
@@ -422,8 +431,8 @@ function ChildProfile() {
           <div className="danger-zone">
             <h3>{t('profile.delete.dangerZoneTitle')}</h3>
             <p className="danger-zone-description">{t('profile.delete.dangerZoneDescription')}</p>
-            <button onClick={handleDelete} className="delete-button">
-              {t('profile.delete.deleteButton')}
+            <button onClick={handleDelete} className="delete-button" disabled={deleting}>
+              {deleting ? t('common.loading') : t('profile.delete.deleteButton')}
             </button>
           </div>
         )}

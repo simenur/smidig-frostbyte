@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 import { auth } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useTranslation } from 'react-i18next';
+import { ToastProvider } from './context/ToastContext';
+import Toast from './components/Toast';
 import Login from './components/Login';
 import Register from './components/Register';
 import Dashboard from './components/Dashboard';
@@ -46,54 +48,57 @@ function App() {
   }
 
   return (
-    <Router>
-      <Routes>
-        <Route
-          path="/login"
-          element={user ? <Navigate to="/dashboard" /> : <Login />}
-        />
-        <Route
-          path="/register"
-          element={user ? <Navigate to="/dashboard" /> : <Register />}
-        />
-        <Route
-          path="/dashboard"
-          element={user ? <Dashboard /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/child/:childId"
-          element={user ? <ChildProfile /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/change-password"
-          element={user ? <ChangePassword /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/add-child"
-          element={user ? <AddChild /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/add-parent"
-          element={user ? <AddParent /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/pending-parents"
-          element={user ? <PendingParents /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/messages"
-          element={user ? <Messages /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/calendar"
-          element={user ? <Calendar /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/"
-          element={<Navigate to={user ? "/dashboard" : "/login"} />}
-        />
-      </Routes>
-    </Router>
+    <ToastProvider>
+      <Router>
+        <Toast />
+        <Routes>
+          <Route
+            path="/login"
+            element={user ? <Navigate to="/dashboard" /> : <Login />}
+          />
+          <Route
+            path="/register"
+            element={user ? <Navigate to="/dashboard" /> : <Register />}
+          />
+          <Route
+            path="/dashboard"
+            element={user ? <Dashboard /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/child/:childId"
+            element={user ? <ChildProfile /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/change-password"
+            element={user ? <ChangePassword /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/add-child"
+            element={user ? <AddChild /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/add-parent"
+            element={user ? <AddParent /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/pending-parents"
+            element={user ? <PendingParents /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/messages"
+            element={user ? <Messages /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/calendar"
+            element={user ? <Calendar /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/"
+            element={<Navigate to={user ? "/dashboard" : "/login"} />}
+          />
+        </Routes>
+      </Router>
+    </ToastProvider>
   );
 }
 
