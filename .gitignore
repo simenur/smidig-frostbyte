@@ -26,3 +26,6 @@ dist-ssr
 # Firebase
 .firebase/
 FIREBASE_SETUP.md
+
+# Assignment documents
+*.pdf
